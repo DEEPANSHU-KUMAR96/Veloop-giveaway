@@ -9,10 +9,10 @@ export const submitClaimHandler = async (req, res, next) => {
         const { giveawayId } = req.params;
 
         // Verify user is actually a winner
-        const winner = await GiveawayWinner.findOne({ 
+        const winner = await GiveawayWinner.findOne({
             userId,
-             giveawayId 
-            });
+            giveawayId
+        });
 
         if (!winner) {
             return res.status(403).json({
@@ -23,15 +23,15 @@ export const submitClaimHandler = async (req, res, next) => {
 
         // Check if claim already submitted
         const existingClaim = await PrizeClaim.findOne({
-             userId,
-              giveawayId 
-            });
+            userId,
+            giveawayId
+        });
         if (existingClaim) {
             return res.status(400).json({
                 success: false,
                 message: 'You have already submitted a claim',
-                data: { 
-                    status: existingClaim.status 
+                data: {
+                    status: existingClaim.status
                 }
             });
         }
@@ -57,7 +57,7 @@ export const submitClaimHandler = async (req, res, next) => {
             if (!fullName || !phone || !address || !city || !state || !pinCode) {
                 return res.status(400).json({
                     success: false,
-                    message: 'fullName, phone, address, city, state aur pinCode required hain physical prize ke liye'
+                    message: 'fullName, phone, address, city, state aur pinCode are required for PHYSICAL prize'
                 });
             }
 
@@ -65,7 +65,7 @@ export const submitClaimHandler = async (req, res, next) => {
             if (!/^[6-9]\d{9}$/.test(phone)) {
                 return res.status(400).json({
                     success: false,
-                    message: 'Invalid phone number — 10 digit Indian number hona chahiye'
+                    message: 'Invalid phone number — must be 10 digits indian mobile number'
                 });
             }
 
@@ -73,7 +73,7 @@ export const submitClaimHandler = async (req, res, next) => {
             if (!/^\d{6}$/.test(pinCode)) {
                 return res.status(400).json({
                     success: false,
-                    message: 'Invalid PIN code — 6 digit hona chahiye'
+                    message: 'Invalid PIN code — must be 6 digits'
                 });
             }
 
@@ -92,7 +92,7 @@ export const submitClaimHandler = async (req, res, next) => {
             if (!email) {
                 return res.status(400).json({
                     success: false,
-                    message: 'Email required hai gift card ke liye'
+                    message: 'Email is required for GIFT_CARD prize'
                 });
             }
 
@@ -147,7 +147,7 @@ export const getMyClaimHandler = async (req, res, next) => {
         if (!claim) {
             return res.status(404).json({
                 success: false,
-                message: 'Koi claim nahi mila'
+                message: 'Claim not found'
             });
         }
 

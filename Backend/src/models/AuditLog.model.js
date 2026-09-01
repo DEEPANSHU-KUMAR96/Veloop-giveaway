@@ -11,7 +11,7 @@ const auditLogSchema = new mongoose.Schema({
     },  // e.g. "JOIN_GIVEAWAY"
     entity: {
         type: String
-    },                  // e.g. "Giveaway"
+    },                 
     entityId: {
         type: mongoose.Schema.Types.ObjectId
     },

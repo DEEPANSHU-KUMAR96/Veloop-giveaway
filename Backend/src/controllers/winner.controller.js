@@ -76,8 +76,14 @@ export const selectWinnersHandler = async (req, res, next) => {
 
     } catch (error) {
         const knownErrors = {
-            GIVEAWAY_NOT_FOUND: { status: 404, message: 'Giveaway not found' },
-            GIVEAWAY_NOT_ENDED: { status: 400, message: 'Giveaway has not ended yet' },
+            GIVEAWAY_NOT_FOUND: {
+                 status: 404,
+                  message: 'Giveaway not found'
+                 },
+            GIVEAWAY_NOT_ENDED: { 
+                status: 400, 
+                message: 'Giveaway has not ended yet'
+             },
         };
 
         const known = knownErrors[error.message];
