@@ -2,7 +2,13 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { registerAPI, loginAPI, getMeAPI } from '../services/authApi.js';
 
 const token = localStorage.getItem('token');
-const user = JSON.parse(localStorage.getItem('user') || 'null');
+let user = null;
+try {
+    const savedUser = localStorage.getItem('user');
+    user = savedUser ? JSON.parse(savedUser) : null;
+} catch (e) {
+    user = null;
+}
 
 // ── Async Thunks ──────────────────────────────────────
 
@@ -13,7 +19,7 @@ export const registerUser = createAsyncThunk(
             return await registerAPI(userData);
         } catch (error) {
             return rejectWithValue(
-                error.response?.data?.message || 'Registration failed'
+                error.response?.data?.message || error.message || 'Registration failed'
             );
         }
     }
@@ -26,7 +32,7 @@ export const loginUser = createAsyncThunk(
             return await loginAPI(credentials);
         } catch (error) {
             return rejectWithValue(
-                error.response?.data?.message || 'Login failed'
+                error.response?.data?.message || error.message || 'Login failed'
             );
         }
     }
@@ -39,7 +45,7 @@ export const fetchMe = createAsyncThunk(
             return await getMeAPI();
         } catch (error) {
             return rejectWithValue(
-                error.response?.data?.message || 'Failed to fetch user'
+                error.response?.data?.message || error.message || 'Failed to fetch user'
             );
         }
     }
@@ -80,10 +86,18 @@ const authSlice = createSlice({
             .addCase(registerUser.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.success = true;
-                state.token = action.payload.token;
-                state.user = action.payload.data;
-                localStorage.setItem('token', action.payload.token);
-                localStorage.setItem('user', JSON.stringify(action.payload.data));
+                const receivedToken =
+                    action.payload?.token || action.payload?.data?.token;
+                const receivedUser =
+                    action.payload?.data?.user ||
+                    action.payload?.data ||
+                    action.payload?.user;
+
+                state.token = receivedToken || state.token;
+                state.user = receivedUser || state.user;
+
+                if (receivedToken) localStorage.setItem('token', receivedToken);
+                if (receivedUser) localStorage.setItem('user', JSON.stringify(receivedUser));
             })
             .addCase(registerUser.rejected, (state, action) => {
                 state.isLoading = false;
@@ -99,10 +113,18 @@ const authSlice = createSlice({
             .addCase(loginUser.fulfilled, (state, action) => {
                 state.isLoading = false;
                 state.success = true;
-                state.token = action.payload.token;
-                state.user = action.payload.data;
-                localStorage.setItem('token', action.payload.token);
-                localStorage.setItem('user', JSON.stringify(action.payload.data));
+                const receivedToken =
+                    action.payload?.token || action.payload?.data?.token;
+                const receivedUser =
+                    action.payload?.data?.user ||
+                    action.payload?.data ||
+                    action.payload?.user;
+
+                state.token = receivedToken || state.token;
+                state.user = receivedUser || state.user;
+
+                if (receivedToken) localStorage.setItem('token', receivedToken);
+                if (receivedUser) localStorage.setItem('user', JSON.stringify(receivedUser));
             })
             .addCase(loginUser.rejected, (state, action) => {
                 state.isLoading = false;
@@ -116,8 +138,12 @@ const authSlice = createSlice({
             })
             .addCase(fetchMe.fulfilled, (state, action) => {
                 state.isLoading = false;
-                state.user = action.payload.data;
-                localStorage.setItem('user', JSON.stringify(action.payload.data));
+                const receivedUser =
+                    action.payload?.data?.user ||
+                    action.payload?.data ||
+                    action.payload?.user;
+                state.user = receivedUser || state.user;
+                if (receivedUser) localStorage.setItem('user', JSON.stringify(receivedUser));
             })
             .addCase(fetchMe.rejected, (state) => {
                 state.isLoading = false;

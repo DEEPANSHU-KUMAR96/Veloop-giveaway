@@ -1,13 +1,16 @@
 import axios from 'axios';
 
+// Dynamically use environment variable or proxy or fallback to port 3000
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+
 const API = axios.create({
-    baseURL: 'http://localhost:3000/api',
+    baseURL: API_BASE_URL,
     headers: {
         'Content-Type': 'application/json',
     },
 });
 
-// every API call include token
+// Attach token to every outgoing request if present
 API.interceptors.request.use(
     (config) => {
         const token = localStorage.getItem('token');
@@ -19,14 +22,20 @@ API.interceptors.request.use(
     (error) => Promise.reject(error)
 );
 
-// if Token expire then logout
+// Response interceptor: handle 401 unauthorized gracefully
 API.interceptors.response.use(
     (response) => response,
     (error) => {
         if (error.response?.status === 401) {
-            localStorage.removeItem('token');
-            localStorage.removeItem('user');
-            window.location.href = '/login';
+            const hadToken = localStorage.getItem('token');
+            if (hadToken) {
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+                // Only redirect if they had a session that expired
+                if (!window.location.pathname.includes('/login')) {
+                    window.location.href = '/login';
+                }
+            }
         }
         return Promise.reject(error);
     }
