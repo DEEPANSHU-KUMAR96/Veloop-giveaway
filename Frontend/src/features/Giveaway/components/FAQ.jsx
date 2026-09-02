@@ -40,17 +40,19 @@ const FAQ = () => {
               key={index}
               className="p-3 rounded-3"
               style={{
-                background: isOpen ? 'rgba(30, 41, 77, 0.5)' : 'rgba(10, 14, 28, 0.4)',
-                border: '1px solid rgba(255, 255, 255, 0.06)',
+                background: isOpen ? 'rgba(30, 41, 77, 0.65)' : 'rgba(10, 14, 28, 0.45)',
+                border: isOpen ? '1px solid rgba(99, 102, 241, 0.3)' : '1px solid rgba(255, 255, 255, 0.06)',
                 cursor: 'pointer',
                 transition: 'all 0.25s ease',
               }}
               onClick={() => setOpenIndex(isOpen ? -1 : index)}
             >
               <div className="d-flex justify-content-between align-items-center">
-                <span className="text-white fw-semibold small">{faq.q}</span>
+                <span className="text-white fw-semibold small" style={{ fontSize: '0.93rem' }}>
+                  {faq.q}
+                </span>
                 <FiChevronDown
-                  className="text-muted transition"
+                  className={isOpen ? 'text-info' : 'text-secondary'}
                   style={{
                     transform: isOpen ? 'rotate(180deg)' : 'none',
                     transition: 'transform 0.2s ease',
@@ -58,7 +60,14 @@ const FAQ = () => {
                 />
               </div>
               {isOpen && (
-                <p className="text-muted small mt-2 mb-0" style={{ lineHeight: 1.5 }}>
+                <p
+                  className="mt-2 mb-0"
+                  style={{
+                    color: '#cbd5e1',
+                    fontSize: '0.86rem',
+                    lineHeight: '1.6',
+                  }}
+                >
                   {faq.a}
                 </p>
               )}

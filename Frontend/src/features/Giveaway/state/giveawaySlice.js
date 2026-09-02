@@ -168,6 +168,21 @@ const giveawaySlice = createSlice({
                 state.isJoining = false;
                 state.joinSuccess = true;
                 state.myStatus = action.payload?.data || action.payload;
+
+                // Optimistically update totalParticipants in Redux state immediately
+                if (state.current) {
+                    if (Array.isArray(state.current)) {
+                        state.current = state.current.map((g) => ({
+                            ...g,
+                            totalParticipants: (g.totalParticipants || 0) + 1,
+                        }));
+                    } else if (typeof state.current === 'object') {
+                        state.current = {
+                            ...state.current,
+                            totalParticipants: (state.current.totalParticipants || 0) + 1,
+                        };
+                    }
+                }
             })
             .addCase(joinGiveaway.rejected, (state, action) => {
                 state.isJoining = false;

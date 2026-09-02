@@ -55,31 +55,49 @@ const Giveaway = () => {
         ? g.prizes.map((p, idx) => ({
             ...g,
             giveawayId: g._id || g.id,
-            prizeId: p._id || p.id,
+            prizeId: p.id || p._id,
+            totalParticipants:
+              typeof g.totalParticipants === 'number'
+                ? g.totalParticipants
+                : typeof g.participantsCount === 'number'
+                ? g.participantsCount
+                : Array.isArray(g.participants)
+                ? g.participants.length
+                : (g.participants || 0),
             title: p.name || p.title || g.title,
             subtitle: p.description || g.description,
-            badge: p.prizeTier || p.tier || (idx === 0 ? '1st Prize' : idx === 1 ? '2nd Prize' : idx === 2 ? '3rd Prize' : 'Lucky Draw'),
-            imgSrc: p.image || p.imageUrl || g.image,
+            badge: p.position ? `${p.position}st Prize` : p.prizeTier || p.tier || (idx === 0 ? '1st Prize' : idx === 1 ? '2nd Prize' : idx === 2 ? '3rd Prize' : 'Lucky Draw'),
+            imgSrc: p.image || p.imageUrl || null,
             prizeData: p,
             prizes: g.prizes,
           }))
         : [g]
     );
   } else if (current && typeof current === 'object' && (current._id || current.id || current.title)) {
+    const parentParticipants =
+      typeof current.totalParticipants === 'number'
+        ? current.totalParticipants
+        : typeof current.participantsCount === 'number'
+        ? current.participantsCount
+        : Array.isArray(current.participants)
+        ? current.participants.length
+        : (current.participants || 0);
+
     if (Array.isArray(current.prizes) && current.prizes.length > 0) {
       activeGiveaways = current.prizes.map((p, idx) => ({
         ...current,
         giveawayId: current._id || current.id,
-        prizeId: p._id || p.id,
+        prizeId: p.id || p._id,
+        totalParticipants: parentParticipants,
         title: p.name || p.title || current.title,
         subtitle: p.description || current.description,
-        badge: p.prizeTier || p.tier || (idx === 0 ? '1st Prize' : idx === 1 ? '2nd Prize' : idx === 2 ? '3rd Prize' : 'Lucky Draw'),
-        imgSrc: p.image || p.imageUrl || current.image,
+        badge: p.position ? `${p.position}st Prize` : p.prizeTier || p.tier || (idx === 0 ? '1st Prize' : idx === 1 ? '2nd Prize' : idx === 2 ? '3rd Prize' : 'Lucky Draw'),
+        imgSrc: p.image || p.imageUrl || null,
         prizeData: p,
         prizes: current.prizes,
       }));
     } else {
-      activeGiveaways = [current];
+      activeGiveaways = [{ ...current, totalParticipants: parentParticipants }];
     }
   }
 
@@ -90,13 +108,36 @@ const Giveaway = () => {
     : [];
 
   // Extract real metrics from database items
-  const totalActiveCount = activeGiveaways.length;
-  const totalParticipantsCount = activeGiveaways.reduce((total, item) => {
-    if (typeof item.participants === 'number') return total + item.participants;
-    if (Array.isArray(item.participants)) return total + item.participants.length;
-    if (typeof item.participantsCount === 'number') return total + item.participantsCount;
-    return total;
-  }, 0);
+  const totalActiveCount = Array.isArray(current)
+    ? current.length
+    : current && typeof current === 'object' && (current._id || current.id)
+    ? 1
+    : activeGiveaways.length > 0
+    ? 1
+    : 0;
+
+  const totalParticipantsCount = Array.isArray(current)
+    ? current.reduce(
+        (total, g) =>
+          total +
+          (typeof g.totalParticipants === 'number'
+            ? g.totalParticipants
+            : typeof g.participantsCount === 'number'
+            ? g.participantsCount
+            : Array.isArray(g.participants)
+            ? g.participants.length
+            : (g.participants || 0)),
+        0
+      )
+    : current
+    ? typeof current.totalParticipants === 'number'
+      ? current.totalParticipants
+      : typeof current.participantsCount === 'number'
+      ? current.participantsCount
+      : Array.isArray(current.participants)
+      ? current.participants.length
+      : (current.participants || 0)
+    : 0;
 
   const prizesWonCount = pastGiveaways.length;
 
@@ -130,7 +171,7 @@ const Giveaway = () => {
     const prizeId =
       entryOptions.prizeId ||
       giveaway.prizeId ||
-      (giveaway.prizes?.[0]?._id || giveaway.prizes?.[0]?.id) ||
+      (giveaway.prizes?.[0]?.id || giveaway.prizes?.[0]?._id) ||
       giveawayId;
 
     if (giveawayId) {
