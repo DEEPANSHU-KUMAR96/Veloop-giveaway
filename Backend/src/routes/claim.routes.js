@@ -7,6 +7,7 @@ import authMiddleware from '../middleware/auth.middleware.js';
 import { claimLimiter } from '../middleware/rateLimit.middleware.js';
 import { claimValidationRules } from '../validator/claim.validator.js';
 import validationMiddleware from '../middleware/validation.middleware.js';
+import { param } from 'express-validator';
 
 const router = express.Router();
 
@@ -24,6 +25,8 @@ router.post(
 router.get(
   '/:giveawayId/my-claim',
   authMiddleware,
+  param('giveawayId').isMongoId().withMessage('Invalid giveawayId'),
+  validationMiddleware,
   getMyClaimHandler
 );
 

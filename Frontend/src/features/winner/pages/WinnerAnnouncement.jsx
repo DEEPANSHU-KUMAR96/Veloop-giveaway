@@ -15,6 +15,8 @@ import {
 } from '../components/index.js';
 import { TrustSection } from '../../Giveaway/components/index.js';
 
+const isValidMongoId = (id) => typeof id === 'string' && /^[0-9a-fA-F]{24}$/.test(id);
+
 const WinnerAnnouncement = () => {
   const { giveawayId: paramGiveawayId } = useParams();
   const { user, isAuthenticated, logoutUser } = useAuth();
@@ -37,24 +39,27 @@ const WinnerAnnouncement = () => {
     isWinner,
     winnerData,
     resetClaim,
+    clearError,
   } = useWinner();
 
   const [showClaimModal, setShowClaimModal] = useState(false);
 
-  // Active Giveaway ID from URL params or Redux current giveaway
-  const targetGiveawayId =
-    paramGiveawayId ||
-    current?._id ||
-    current?.id ||
-    (Array.isArray(current) && current.length > 0 ? (current[0]._id || current[0].id) : null);
-
+  // Clear any previous error on mount
   useEffect(() => {
+    if (clearError) clearError();
     getCurrentGiveaway();
     getPreviousWinners();
   }, []);
 
+  // Extract valid giveaway ID
+  const targetGiveawayId =
+    (paramGiveawayId && isValidMongoId(paramGiveawayId) ? paramGiveawayId : null) ||
+    (current?._id && isValidMongoId(current._id) ? current._id : null) ||
+    (current?.id && isValidMongoId(current.id) ? current.id : null) ||
+    (Array.isArray(current) && current.length > 0 && isValidMongoId(current[0]._id) ? current[0]._id : null);
+
   useEffect(() => {
-    if (targetGiveawayId) {
+    if (targetGiveawayId && isValidMongoId(targetGiveawayId)) {
       getWinners(targetGiveawayId);
       if (isAuthenticated) {
         checkIfWinner(targetGiveawayId);
@@ -86,7 +91,10 @@ const WinnerAnnouncement = () => {
     resetClaim();
   };
 
-  const giveawayTitle = current?.title || (Array.isArray(current) && current[0]?.title) || 'Summer Rewards Giveaway';
+  const giveawayTitle =
+    current?.title ||
+    (Array.isArray(current) && current[0]?.title) ||
+    'Summer Rewards Giveaway';
 
   return (
     <div className="giveaway-page-wrapper">
@@ -154,13 +162,17 @@ const WinnerAnnouncement = () => {
       <div className="container py-4">
         {/* Back Link */}
         <div className="mb-3">
-          <Link to="/giveaway" className="text-muted text-decoration-none small d-flex align-items-center gap-1 hover-white" style={{ color: '#94a3b8' }}>
+          <Link
+            to="/giveaway"
+            className="text-muted text-decoration-none small d-flex align-items-center gap-1 hover-white"
+            style={{ color: '#94a3b8' }}
+          >
             <FiArrowLeft />
             <span>Back to Active Giveaways</span>
           </Link>
         </div>
 
-        {/* Global Error Notice */}
+        {/* Error Notice */}
         {error && (
           <div className="veloop-alert mb-4">
             <div className="d-flex align-items-center gap-2">
@@ -171,7 +183,10 @@ const WinnerAnnouncement = () => {
         )}
 
         {/* Winner Hero Section */}
-        <WinnerHero giveawayTitle={giveawayTitle} winnerCount={allDisplayWinners.length} />
+        <WinnerHero
+          giveawayTitle={giveawayTitle}
+          winnerCount={allDisplayWinners.length}
+        />
 
         {/* Personalized Winner Banner */}
         <WinnerBanner
@@ -182,11 +197,11 @@ const WinnerAnnouncement = () => {
         />
 
         {/* Top 3 Podium Cards */}
-        <WinnerPodium topWinners={topWinners} />
+        {topWinners.length > 0 && <WinnerPodium topWinners={topWinners} />}
 
         {/* Remaining All Winners List Table */}
         <WinnerList
-          winners={remainingWinners.length > 0 ? remainingWinners : allDisplayWinners}
+          winners={topWinners.length > 0 ? remainingWinners : allDisplayWinners}
           isLoading={isLoading}
         />
 
@@ -204,10 +219,18 @@ const WinnerAnnouncement = () => {
               <div>© 2024 VELoop Rewards. All rights reserved. Secured with SSL Encryption.</div>
             </div>
             <div className="d-flex flex-wrap justify-content-center gap-2">
-              <Link to="/giveaway" className="footer-link">GIVEAWAYS</Link>
-              <Link to="/winners" className="footer-link">WINNERS</Link>
-              <a href="#terms" className="footer-link">TERMS</a>
-              <a href="#privacy" className="footer-link">PRIVACY</a>
+              <Link to="/giveaway" className="footer-link">
+                GIVEAWAYS
+              </Link>
+              <Link to="/winners" className="footer-link">
+                WINNERS
+              </Link>
+              <a href="#terms" className="footer-link">
+                TERMS
+              </a>
+              <a href="#privacy" className="footer-link">
+                PRIVACY
+              </a>
             </div>
           </div>
         </footer>

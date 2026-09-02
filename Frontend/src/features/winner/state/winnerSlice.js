@@ -40,7 +40,7 @@ export const checkMyWinnerStatus = createAsyncThunk(
             return await checkMyWinnerStatusAPI(giveawayId);
         } catch (error) {
             return rejectWithValue(
-                error.response?.data?.message || error.message || 'Failed to check winner status'
+                error.response?.data?.message || error.message || 'Not a winner'
             );
         }
     }
@@ -66,7 +66,7 @@ export const fetchMyClaim = createAsyncThunk(
             return await getMyClaimAPI(giveawayId);
         } catch (error) {
             return rejectWithValue(
-                error.response?.data?.message || error.message || 'Failed to fetch claim status'
+                error.response?.data?.message || error.message || 'No active claim found'
             );
         }
     }
@@ -111,7 +111,10 @@ const winnerSlice = createSlice({
             })
             .addCase(fetchWinners.rejected, (state, action) => {
                 state.isLoading = false;
-                state.error = action.payload;
+                // Only show critical errors, ignore empty/concluded queries
+                if (action.payload && !action.payload.toLowerCase().includes('validation')) {
+                    state.error = action.payload;
+                }
             });
 
         // Previous Winners
@@ -126,25 +129,23 @@ const winnerSlice = createSlice({
                 const data = payload?.data || payload?.winners || payload;
                 state.previousWinners = Array.isArray(data) ? data : data ? [data] : [];
             })
-            .addCase(fetchPreviousWinners.rejected, (state, action) => {
+            .addCase(fetchPreviousWinners.rejected, (state) => {
                 state.isLoading = false;
-                state.error = action.payload;
             });
 
         // My Winner Status
         builder
             .addCase(checkMyWinnerStatus.pending, (state) => {
                 state.isLoading = true;
-                state.error = null;
             })
             .addCase(checkMyWinnerStatus.fulfilled, (state, action) => {
                 state.isLoading = false;
                 const payload = action.payload;
                 state.myWinnerStatus = payload?.data || payload;
             })
-            .addCase(checkMyWinnerStatus.rejected, (state, action) => {
+            .addCase(checkMyWinnerStatus.rejected, (state) => {
                 state.isLoading = false;
-                state.error = action.payload;
+                state.myWinnerStatus = { isWinner: false, winner: null };
             });
 
         // Submit Prize Claim
@@ -173,8 +174,9 @@ const winnerSlice = createSlice({
                 state.isLoading = false;
                 state.myClaim = action.payload?.data || action.payload;
             })
-            .addCase(fetchMyClaim.rejected, (state, action) => {
+            .addCase(fetchMyClaim.rejected, (state) => {
                 state.isLoading = false;
+                state.myClaim = null;
             });
     },
 });
