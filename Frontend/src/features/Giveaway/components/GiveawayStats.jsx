@@ -68,9 +68,8 @@ const GiveawayStats = ({
             </div>
             <div>
               <div className="metric-label">ENDS IN</div>
-              <div className="metric-value" style={{ fontSize: '0.98rem' }}>
-                <Countdown targetDate={targetDate} />{' '}
-                <span className="metric-highlight-amber">Remaining</span>
+              <div className="metric-value metric-highlight-amber" style={{ fontSize: '0.94rem' }}>
+                <Countdown targetDate={targetDate} />
               </div>
             </div>
           </div>

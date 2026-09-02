@@ -208,6 +208,9 @@ const Giveaway = () => {
             <Link to="/giveaway" className="nav-link-custom active">
               Giveaways
             </Link>
+            <Link to="/winners" className="nav-link-custom">
+              Winners
+            </Link>
             <a href="#leaderboard" className="nav-link-custom">
               Leaderboard
             </a>

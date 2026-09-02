@@ -3,6 +3,7 @@ import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom'
 import Login from '../features/auth/pages/Login.jsx';
 import Register from '../features/auth/pages/Register.jsx';
 import Giveaway from '../features/Giveaway/pages/Giveaway.jsx';
+import WinnerAnnouncement from '../features/winner/pages/WinnerAnnouncement.jsx';
 import { ProtectedRoute, PublicRoute } from './ProtectedRoute.jsx';
 
 // createBrowserRouter router definition
@@ -33,6 +34,15 @@ export const router = createBrowserRouter([
   {
     path: '/dashboard',
     element: <Giveaway />,
+  },
+  // Winner Announcement Routes
+  {
+    path: '/winners',
+    element: <WinnerAnnouncement />,
+  },
+  {
+    path: '/winners/:giveawayId',
+    element: <WinnerAnnouncement />,
   },
   // Catch all unmatched routes
   {

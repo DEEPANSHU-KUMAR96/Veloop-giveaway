@@ -1,0 +1,231 @@
+import React, { useEffect, useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
+import { FiLogOut, FiUser, FiArrowLeft, FiAlertCircle } from 'react-icons/fi';
+import { BsBoxSeam } from 'react-icons/bs';
+import useWinner from '../hooks/useWinner.js';
+import useGiveaway from '../../Giveaway/hooks/useGiveaway.js';
+import useAuth from '../../auth/hooks/useAuth.js';
+import {
+  WinnerHero,
+  WinnerBanner,
+  WinnerPodium,
+  WinnerList,
+  ClaimPrizeModal,
+  FairnessAuditCard,
+} from '../components/index.js';
+import { TrustSection } from '../../Giveaway/components/index.js';
+
+const WinnerAnnouncement = () => {
+  const { giveawayId: paramGiveawayId } = useParams();
+  const { user, isAuthenticated, logoutUser } = useAuth();
+  const { current, getCurrentGiveaway } = useGiveaway();
+  const {
+    winners,
+    previousWinners,
+    myWinnerStatus,
+    myClaim,
+    isClaiming,
+    claimSuccess,
+    claimError,
+    isLoading,
+    error,
+    getWinners,
+    getPreviousWinners,
+    checkIfWinner,
+    claimPrize,
+    getMyClaim,
+    isWinner,
+    winnerData,
+    resetClaim,
+  } = useWinner();
+
+  const [showClaimModal, setShowClaimModal] = useState(false);
+
+  // Active Giveaway ID from URL params or Redux current giveaway
+  const targetGiveawayId =
+    paramGiveawayId ||
+    current?._id ||
+    current?.id ||
+    (Array.isArray(current) && current.length > 0 ? (current[0]._id || current[0].id) : null);
+
+  useEffect(() => {
+    getCurrentGiveaway();
+    getPreviousWinners();
+  }, []);
+
+  useEffect(() => {
+    if (targetGiveawayId) {
+      getWinners(targetGiveawayId);
+      if (isAuthenticated) {
+        checkIfWinner(targetGiveawayId);
+        getMyClaim(targetGiveawayId);
+      }
+    }
+  }, [targetGiveawayId, isAuthenticated]);
+
+  const allDisplayWinners = winners.length > 0 ? winners : previousWinners;
+  const topWinners = allDisplayWinners.slice(0, 3);
+  const remainingWinners = allDisplayWinners.slice(3);
+
+  const handleClaimSubmit = async (formData) => {
+    if (targetGiveawayId) {
+      const res = await claimPrize(targetGiveawayId, formData);
+      if (res?.type?.endsWith('fulfilled')) {
+        getMyClaim(targetGiveawayId);
+      }
+    }
+  };
+
+  const handleOpenClaimModal = () => {
+    resetClaim();
+    setShowClaimModal(true);
+  };
+
+  const handleCloseClaimModal = () => {
+    setShowClaimModal(false);
+    resetClaim();
+  };
+
+  const giveawayTitle = current?.title || (Array.isArray(current) && current[0]?.title) || 'Summer Rewards Giveaway';
+
+  return (
+    <div className="giveaway-page-wrapper">
+      {/* Top Navbar */}
+      <nav className="veloop-navbar">
+        <div className="container d-flex align-items-center justify-content-between">
+          <Link to="/" className="d-flex align-items-center gap-2 text-decoration-none">
+            <span className="veloop-logo-icon" style={{ fontSize: '24px' }}>
+              <BsBoxSeam />
+            </span>
+            <span className="veloop-brand-name" style={{ fontSize: '1.25rem' }}>
+              VELOOP REWARDS
+            </span>
+          </Link>
+
+          <div className="d-none d-md-flex align-items-center gap-1">
+            <Link to="/giveaway" className="nav-link-custom">
+              Giveaways
+            </Link>
+            <Link to="/winners" className="nav-link-custom active">
+              Winners
+            </Link>
+            <a href="#leaderboard" className="nav-link-custom">
+              Leaderboard
+            </a>
+            <a href="#rewards" className="nav-link-custom">
+              Rewards
+            </a>
+            <a href="#help" className="nav-link-custom">
+              Help Center
+            </a>
+          </div>
+
+          <div className="d-flex align-items-center gap-3">
+            {isAuthenticated ? (
+              <div className="d-flex align-items-center gap-2">
+                <span className="text-white small fw-semibold d-none d-sm-inline">
+                  <FiUser className="me-1 text-primary" />
+                  {user?.fullName || user?.name || user?.username || 'Member'}
+                </span>
+                <button
+                  onClick={logoutUser}
+                  className="btn btn-sm btn-outline-secondary d-flex align-items-center gap-1 text-white border-secondary-subtle"
+                  style={{ borderRadius: '20px', padding: '5px 14px' }}
+                >
+                  <FiLogOut size={14} />
+                  <span>Logout</span>
+                </button>
+              </div>
+            ) : (
+              <>
+                <Link to="/login" className="btn-nav-login">
+                  Login
+                </Link>
+                <Link to="/register" className="btn-nav-signup">
+                  Sign Up
+                </Link>
+              </>
+            )}
+          </div>
+        </div>
+      </nav>
+
+      {/* Main Content Area */}
+      <div className="container py-4">
+        {/* Back Link */}
+        <div className="mb-3">
+          <Link to="/giveaway" className="text-muted text-decoration-none small d-flex align-items-center gap-1 hover-white" style={{ color: '#94a3b8' }}>
+            <FiArrowLeft />
+            <span>Back to Active Giveaways</span>
+          </Link>
+        </div>
+
+        {/* Global Error Notice */}
+        {error && (
+          <div className="veloop-alert mb-4">
+            <div className="d-flex align-items-center gap-2">
+              <FiAlertCircle />
+              <span>{error}</span>
+            </div>
+          </div>
+        )}
+
+        {/* Winner Hero Section */}
+        <WinnerHero giveawayTitle={giveawayTitle} winnerCount={allDisplayWinners.length} />
+
+        {/* Personalized Winner Banner */}
+        <WinnerBanner
+          isWinner={isWinner}
+          winnerData={winnerData}
+          onClaimClick={handleOpenClaimModal}
+          hasClaimed={!!myClaim}
+        />
+
+        {/* Top 3 Podium Cards */}
+        <WinnerPodium topWinners={topWinners} />
+
+        {/* Remaining All Winners List Table */}
+        <WinnerList
+          winners={remainingWinners.length > 0 ? remainingWinners : allDisplayWinners}
+          isLoading={isLoading}
+        />
+
+        {/* Cryptographic Fairness Card */}
+        <FairnessAuditCard />
+
+        {/* Bottom Trust Section */}
+        <TrustSection />
+
+        {/* Footer */}
+        <footer className="veloop-footer mt-5">
+          <div className="d-flex flex-column flex-md-row align-items-center justify-content-between gap-3 text-center text-md-start">
+            <div>
+              <div className="footer-brand-title">VELoop Rewards</div>
+              <div>© 2024 VELoop Rewards. All rights reserved. Secured with SSL Encryption.</div>
+            </div>
+            <div className="d-flex flex-wrap justify-content-center gap-2">
+              <Link to="/giveaway" className="footer-link">GIVEAWAYS</Link>
+              <Link to="/winners" className="footer-link">WINNERS</Link>
+              <a href="#terms" className="footer-link">TERMS</a>
+              <a href="#privacy" className="footer-link">PRIVACY</a>
+            </div>
+          </div>
+        </footer>
+      </div>
+
+      {/* Claim Prize Shipping Modal */}
+      <ClaimPrizeModal
+        isOpen={showClaimModal}
+        onClose={handleCloseClaimModal}
+        onSubmitClaim={handleClaimSubmit}
+        winnerData={winnerData}
+        isClaiming={isClaiming}
+        claimSuccess={claimSuccess}
+        claimError={claimError}
+        user={user}
+      />
+    </div>
+  );
+};
+
+export default WinnerAnnouncement;

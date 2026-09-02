@@ -15,7 +15,7 @@ const Countdown = ({ targetDate, onComplete }) => {
         setTimeLeft({
           days: Math.floor(difference / (1000 * 60 * 60 * 24)),
           hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-          minutes: Math.floor((difference / 1000 / 60) % 60),
+          minutes: Math.floor((difference / (1000 * 60)) % 60),
           seconds: Math.floor((difference / 1000) % 60),
         });
       } else {
@@ -33,9 +33,14 @@ const Countdown = ({ targetDate, onComplete }) => {
     return <span>Active</span>;
   }
 
+  if (timeLeft.days === 0 && timeLeft.hours === 0 && timeLeft.minutes === 0 && timeLeft.seconds === 0) {
+    return <span className="text-danger fw-bold">Ended</span>;
+  }
+
   return (
     <span>
-      {timeLeft.days}d : {String(timeLeft.hours).padStart(2, '0')}h : {String(timeLeft.minutes).padStart(2, '0')}m
+      {timeLeft.days > 0 && `${timeLeft.days}d : `}
+      {String(timeLeft.hours).padStart(2, '0')}h : {String(timeLeft.minutes).padStart(2, '0')}m : {String(timeLeft.seconds).padStart(2, '0')}s
     </span>
   );
 };
