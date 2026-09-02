@@ -15,22 +15,22 @@ import adminRoutes from './routes/admin.routes.js';
 
 const app = express();
 
-app.use(express.json());                    // parse JSON body
+app.use(express.json()); // parse JSON body
 app.use(express.urlencoded({ extended: true }));
 
 
-// ─── Security Middleware ───────────────────────────────
-app.use(helmet());         // sets secure HTTP headers
+// Security Middleware 
+app.use(helmet());  // sets secure HTTP headers
 app.use(cors({
     origin: process.env.FRONTEND_URL || 'http://localhost:5173',
     credentials: true,
 }));
 
-// ─── General Middleware ────────────────────────────────
-app.use(morgan('dev'));      // log every request
-app.use(generalLimiter);                   // global rate limit
+// General Middleware 
+app.use(morgan('dev')); // log every request
+app.use(generalLimiter); // global rate limit
 
-// ─── Health Check ──────────────────────────────────────
+// Health Check 
 app.get('/api/health', (req, res) => {
     res.status(200).json({
         success: true,
@@ -39,7 +39,7 @@ app.get('/api/health', (req, res) => {
     });
 });
 
-// ─── API Routes ────────────────────────────────────────
+// API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/giveaways', giveawayRoutes);
@@ -47,7 +47,7 @@ app.use('/api/giveaways', participationRoutes);
 app.use('/api/giveaways', winnerRoutes);
 app.use('/api/giveaways', claimRoutes);
 
-// ─── 404 Handler ───────────────────────────────────────
+// 404 Handler 
 app.use((req, res) => {
     res.status(404).json({
         success: false,
@@ -55,8 +55,8 @@ app.use((req, res) => {
     });
 });
 
-// ─── Global Error Handler ──────────────────────────────
-// Must be last — catches all errors thrown in controllers
+// Global Error Handler 
+// Must be last catches all errors thrown in controllers
 app.use(errorMiddleware);
 
 export default app;

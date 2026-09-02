@@ -1,0 +1,433 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+
+:root {
+  --font-main: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --bg-dark: #070913;
+  --card-bg: rgba(18, 22, 40, 0.78);
+  --card-border: rgba(255, 255, 255, 0.08);
+  --input-bg: rgba(13, 17, 33, 0.85);
+  --input-border: rgba(255, 255, 255, 0.09);
+  --input-focus-border: #6366f1;
+  --text-primary: #ffffff;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --primary-purple: #7c77ff;
+  --primary-blue: #638bfb;
+  --login-btn-gradient: linear-gradient(135deg, #bfa8ff 0%, #46cbf0 100%);
+  --register-btn-gradient: linear-gradient(135deg, #7c77ff 0%, #5e8cff 100%);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-main);
+  background-color: var(--bg-dark);
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Background Atmosphere */
+.veloop-auth-wrapper {
+  min-height: 100vh;
+  width: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 16px;
+  background: radial-gradient(circle at 15% 20%, rgba(94, 53, 177, 0.18) 0%, transparent 45%),
+    radial-gradient(circle at 85% 80%, rgba(30, 136, 229, 0.15) 0%, transparent 45%),
+    radial-gradient(circle at 50% 50%, rgba(15, 23, 42, 0.95) 0%, #060811 100%);
+  overflow: hidden;
+}
+
+/* Subtle background glowing orbs */
+.glow-orb-top-left {
+  position: absolute;
+  top: -100px;
+  left: -100px;
+  width: 450px;
+  height: 450px;
+  background: radial-gradient(circle, rgba(124, 77, 255, 0.15) 0%, rgba(124, 77, 255, 0) 70%);
+  filter: blur(60px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.glow-orb-bottom-right {
+  position: absolute;
+  bottom: -100px;
+  right: -100px;
+  width: 450px;
+  height: 450px;
+  background: radial-gradient(circle, rgba(56, 189, 248, 0.12) 0%, rgba(56, 189, 248, 0) 70%);
+  filter: blur(60px);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Subtle dot-matrix pattern background */
+.veloop-auth-wrapper::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+  background-size: 32px 32px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Auth Card Container */
+.veloop-auth-card {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 450px;
+  background: var(--card-bg);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid var(--card-border);
+  border-radius: 24px;
+  padding: 40px 36px;
+  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.7),
+    0 0 50px rgba(99, 102, 241, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+@media (max-width: 480px) {
+  .veloop-auth-card {
+    padding: 30px 22px;
+    border-radius: 20px;
+  }
+}
+
+/* Brand Header */
+.veloop-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 24px;
+}
+
+.veloop-brand-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.veloop-logo-icon {
+  font-size: 26px;
+  color: #c4b5fd;
+  filter: drop-shadow(0 0 10px rgba(167, 139, 250, 0.5));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.veloop-brand-name {
+  font-size: 1.45rem;
+  font-weight: 800;
+  letter-spacing: 2.5px;
+  color: #ffffff;
+  text-transform: uppercase;
+}
+
+.veloop-brand-sub {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 4.5px;
+  color: #94a3b8;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+/* Titles */
+.veloop-title {
+  font-size: 1.55rem;
+  font-weight: 700;
+  color: #ffffff;
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.veloop-subtitle {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  text-align: center;
+  max-width: 320px;
+  margin: 0 auto 28px auto;
+  line-height: 1.45;
+}
+
+/* Form Styles */
+.veloop-form-group {
+  margin-bottom: 18px;
+}
+
+.veloop-label-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 7px;
+}
+
+.veloop-label {
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: #cbd5e1;
+  letter-spacing: 0.2px;
+}
+
+.veloop-forgot-link {
+  font-size: 0.78rem;
+  color: #a5b4fc;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.veloop-forgot-link:hover {
+  color: #c7d2fe;
+  text-decoration: underline;
+}
+
+/* Input Box Wrapper */
+.veloop-input-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  border-radius: 12px;
+  padding: 0 14px;
+  height: 48px;
+  transition: all 0.25s ease;
+}
+
+.veloop-input-box:focus-within {
+  border-color: #6366f1;
+  background: rgba(18, 23, 44, 0.95);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2), 0 0 16px rgba(99, 102, 241, 0.15);
+}
+
+.veloop-input-box.has-error {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.2);
+}
+
+.veloop-input-icon-left {
+  font-size: 18px;
+  color: #64748b;
+  margin-right: 12px;
+  display: flex;
+  align-items: center;
+  transition: color 0.2s ease;
+}
+
+.veloop-input-box:focus-within .veloop-input-icon-left {
+  color: #a5b4fc;
+}
+
+.veloop-input {
+  flex: 1;
+  background: transparent !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  color: #f8fafc !important;
+  font-size: 0.9rem;
+  font-family: var(--font-main);
+  padding: 0 !important;
+}
+
+.veloop-input::placeholder {
+  color: #475569;
+  font-weight: 400;
+}
+
+/* Fix browser autofill dark theme */
+.veloop-input:-webkit-autofill,
+.veloop-input:-webkit-autofill:hover,
+.veloop-input:-webkit-autofill:focus {
+  -webkit-text-fill-color: #f8fafc;
+  -webkit-box-shadow: 0 0 0px 1000px #0f1424 inset;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+.veloop-input-icon-right {
+  background: none;
+  border: none;
+  color: #64748b;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  transition: color 0.2s ease;
+}
+
+.veloop-input-icon-right:hover {
+  color: #cbd5e1;
+}
+
+/* Action Buttons */
+.veloop-btn {
+  width: 100%;
+  height: 50px;
+  border-radius: 12px;
+  border: none;
+  font-size: 0.95rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  margin-top: 26px;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Register Button (Purple to Blue gradient) */
+.veloop-btn-register {
+  background: var(--register-btn-gradient);
+  color: #ffffff;
+  box-shadow: 0 8px 24px rgba(99, 102, 241, 0.35);
+}
+
+.veloop-btn-register:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(99, 102, 241, 0.5);
+  filter: brightness(1.08);
+}
+
+.veloop-btn-register:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+/* Login Button (Lilac to Cyan gradient with dark contrast text) */
+.veloop-btn-login {
+  background: var(--login-btn-gradient);
+  color: #0d1222;
+  font-weight: 700;
+  box-shadow: 0 8px 24px rgba(56, 189, 248, 0.3);
+}
+
+.veloop-btn-login:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px rgba(56, 189, 248, 0.45);
+  filter: brightness(1.06);
+}
+
+.veloop-btn-login:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.veloop-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+/* Card Footer */
+.veloop-card-footer {
+  text-align: center;
+  margin-top: 24px;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.veloop-card-footer-link {
+  color: #ffffff;
+  font-weight: 600;
+  text-decoration: none;
+  margin-left: 6px;
+  transition: color 0.2s ease;
+}
+
+.veloop-btn-login-link {
+  color: #a5b4fc;
+}
+
+.veloop-btn-register-link {
+  color: #38bdf8;
+}
+
+.veloop-card-footer-link:hover {
+  text-decoration: underline;
+  color: #ffffff;
+}
+
+/* Trust Badges outside card */
+.veloop-trust-badges {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  margin-top: 28px;
+  color: #64748b;
+  font-size: 0.82rem;
+  font-weight: 500;
+}
+
+.veloop-trust-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.veloop-trust-icon {
+  font-size: 15px;
+  color: #64748b;
+}
+
+/* Alerts */
+.veloop-alert {
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  color: #fca5a5;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 0.84rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.veloop-alert-success {
+  background: rgba(34, 197, 94, 0.12);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  color: #86efac;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0b0e1b;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
