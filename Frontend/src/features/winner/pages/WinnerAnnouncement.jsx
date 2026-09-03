@@ -10,10 +10,10 @@ import {
   WinnerBanner,
   WinnerPodium,
   WinnerList,
-  ClaimPrizeModal,
   FairnessAuditCard,
 } from '../components/index.js';
 import { TrustSection } from '../../Giveaway/components/index.js';
+import ClaimModal from '../../claim/pages/ClaimModal.jsx';
 
 const isValidMongoId = (id) => typeof id === 'string' && /^[0-9a-fA-F]{24}$/.test(id);
 
@@ -68,9 +68,19 @@ const WinnerAnnouncement = () => {
     }
   }, [targetGiveawayId, isAuthenticated]);
 
-  const allDisplayWinners = winners.length > 0 ? winners : previousWinners;
+  // Merge current giveaway winners + all previous winners
+  // winners = current active giveaway's winners (empty until draw is done)
+  // previousWinners = ALL GiveawayWinner records from /previous/winners
+  const allDisplayWinners = [
+    ...winners,
+    // Avoid duplicates: only add previousWinners not already in winners
+    ...previousWinners.filter(
+      (pw) => !winners.some((w) => String(w._id) === String(pw._id))
+    ),
+  ];
   const topWinners = allDisplayWinners.slice(0, 3);
   const remainingWinners = allDisplayWinners.slice(3);
+
 
   const handleClaimSubmit = async (formData) => {
     if (targetGiveawayId) {
@@ -89,7 +99,12 @@ const WinnerAnnouncement = () => {
   const handleCloseClaimModal = () => {
     setShowClaimModal(false);
     resetClaim();
+    // Refresh winner claim status so WinnerBanner updates
+    if (targetGiveawayId && isAuthenticated) {
+      getMyClaim(targetGiveawayId);
+    }
   };
+
 
   const giveawayTitle =
     current?.title ||
@@ -201,9 +216,10 @@ const WinnerAnnouncement = () => {
 
         {/* Remaining All Winners List Table */}
         <WinnerList
-          winners={topWinners.length > 0 ? remainingWinners : allDisplayWinners}
+          winners={allDisplayWinners}
           isLoading={isLoading}
         />
+
 
         {/* Cryptographic Fairness Card */}
         <FairnessAuditCard />
@@ -236,15 +252,12 @@ const WinnerAnnouncement = () => {
         </footer>
       </div>
 
-      {/* Claim Prize Shipping Modal */}
-      <ClaimPrizeModal
+      {/* Prize Claim Modal — powered by claim Redux slice */}
+      <ClaimModal
         isOpen={showClaimModal}
         onClose={handleCloseClaimModal}
-        onSubmitClaim={handleClaimSubmit}
+        giveawayId={targetGiveawayId}
         winnerData={winnerData}
-        isClaiming={isClaiming}
-        claimSuccess={claimSuccess}
-        claimError={claimError}
         user={user}
       />
     </div>
