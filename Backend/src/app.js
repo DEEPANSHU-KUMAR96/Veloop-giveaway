@@ -58,7 +58,7 @@ app.use('/api/giveaways', claimRoutes);
 // ─── SPA Fallback ─────────────────────────────────────────────────────
 // For any route that is NOT an API route, serve the React app's index.html
 // This allows React Router to handle client-side routes like /giveaway, /login, /register, /winners etc.
-app.get('*', (req, res, next) => {
+app.get('/{*splat}', (req, res, next) => {
     // Skip API routes — let them fall through to the 404 handler below
     if (req.path.startsWith('/api')) {
         return next();
