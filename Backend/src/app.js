@@ -14,6 +14,7 @@ import claimRoutes from './routes/claim.routes.js';
 import adminRoutes from './routes/admin.routes.js';
 
 const app = express();
+app.set("trust proxy", 1);
 
 app.use(express.json()); // parse JSON body
 app.use(express.urlencoded({ extended: true }));
