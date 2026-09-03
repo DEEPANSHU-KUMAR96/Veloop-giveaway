@@ -1,7 +1,19 @@
 import axios from 'axios';
 
-// Dynamically use environment variable or proxy or fallback to port 3000
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000/api';
+// Dynamically use environment variable, live deployed URL, or fallback
+const getApiBaseUrl = () => {
+    if (import.meta.env.VITE_API_URL) {
+        return import.meta.env.VITE_API_URL;
+    }
+    // When running in the browser on the live deployed domain
+    if (typeof window !== 'undefined' && window.location.origin.includes('veloop-giveaway.onrender.com')) {
+        return `${window.location.origin}/api`;
+    }
+    // Default to the live Render backend
+    return 'https://veloop-giveaway.onrender.com/api';
+};
+
+const API_BASE_URL = getApiBaseUrl();
 
 const API = axios.create({
     baseURL: API_BASE_URL,
