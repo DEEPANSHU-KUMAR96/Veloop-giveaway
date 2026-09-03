@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import {
-  FiLogOut, FiUser, FiGift, FiAlertCircle, FiCheck, FiAward,
+  FiGift, FiAlertCircle, FiCheck,
   FiClock, FiCheckCircle, FiPackage, FiPhone, FiMapPin, FiTruck, FiMail, FiX,
 } from 'react-icons/fi';
-import { BsBoxSeam, BsStars } from 'react-icons/bs';
+import { BsStars } from 'react-icons/bs';
+import { motion } from 'framer-motion';
 import useGiveaway from '../hooks/useGiveaway.js';
 import useAuth from '../../auth/hooks/useAuth.js';
 import useWinner from '../../winner/hooks/useWinner.js';
 import useClaim from '../../claim/hooks/useClaim.js';
+import Navbar from '../../../components/Navbar.jsx';
 import {
   GiveawayHero,
   GiveawayStats,
@@ -22,6 +24,7 @@ import {
   FAQ,
   TrustSection,
 } from '../components/index.js';
+
 
 // ─────────────────────────────────────────────────────────────────────────────
 // ClaimForm — inline component for Physical + Gift Card prize claim
@@ -430,44 +433,8 @@ const Giveaway = () => {
   // ── Render ─────────────────────────────────────────────────────────────────
   return (
     <div className="giveaway-page-wrapper">
-      {/* ── Navbar ─────────────────────────────────────────────────────────── */}
-      <nav className="veloop-navbar">
-        <div className="container d-flex align-items-center justify-content-between">
-          <Link to="/" className="d-flex align-items-center gap-2 text-decoration-none">
-            <span className="veloop-logo-icon" style={{ fontSize: '24px' }}><BsBoxSeam /></span>
-            <span className="veloop-brand-name" style={{ fontSize: '1.25rem' }}>VELOOP REWARDS</span>
-          </Link>
-
-          <div className="d-none d-md-flex align-items-center gap-1">
-            <Link to="/giveaway" className="nav-link-custom active">Giveaways</Link>
-            <Link to="/winners" className="nav-link-custom">Winners</Link>
-            <a href="#leaderboard" className="nav-link-custom">Leaderboard</a>
-            <a href="#rewards" className="nav-link-custom">Rewards</a>
-            <a href="#help" className="nav-link-custom">Help Center</a>
-          </div>
-
-          <div className="d-flex align-items-center gap-3">
-            {isAuthenticated ? (
-              <div className="d-flex align-items-center gap-2">
-                <span className="text-white small fw-semibold d-none d-sm-inline">
-                  <FiUser className="me-1 text-primary" />
-                  {user?.fullName || user?.name || user?.username || 'Member'}
-                </span>
-                <button onClick={logoutUser}
-                  className="btn btn-sm btn-outline-secondary d-flex align-items-center gap-1 text-white border-secondary-subtle"
-                  style={{ borderRadius: '20px', padding: '5px 14px' }}>
-                  <FiLogOut size={14} /><span>Logout</span>
-                </button>
-              </div>
-            ) : (
-              <>
-                <Link to="/login" className="btn-nav-login">Login</Link>
-                <Link to="/register" className="btn-nav-signup">Sign Up</Link>
-              </>
-            )}
-          </div>
-        </div>
-      </nav>
+      {/* ── Universal Responsive Navbar with Mobile Aside Drawer ────────── */}
+      <Navbar />
 
       {/* ── Main Container ─────────────────────────────────────────────────── */}
       <div className="container py-4">
@@ -486,7 +453,10 @@ const Giveaway = () => {
 
         {/* ── Winner Notification Banner (only for authenticated winners) ──── */}
         {isAuthenticated && isWinner && winnerData && (
-          <div
+          <motion.div
+            initial={{ opacity: 0, scale: 0.96, y: 15 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ duration: 0.45, ease: 'easeOut' }}
             className="p-3 p-md-4 rounded-4 mb-4 text-white position-relative overflow-hidden"
             style={{
               background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.25) 0%, rgba(56, 189, 248, 0.18) 100%)',
@@ -498,21 +468,24 @@ const Giveaway = () => {
             <div className="position-absolute top-0 end-0 rounded-circle" style={{ width: '200px', height: '200px', background: 'radial-gradient(circle, rgba(56,189,248,0.12) 0%, transparent 70%)', transform: 'translate(40%, -40%)', pointerEvents: 'none' }} />
 
             <div className="d-flex flex-column flex-md-row align-items-start align-items-md-center justify-content-between gap-3">
-              <div className="d-flex align-items-center gap-3">
-                <div className="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
+              <div className="d-flex align-items-center gap-3 w-100 w-md-auto">
+                <motion.div
+                  animate={{ scale: [1, 1.06, 1], rotate: [0, 4, -4, 0] }}
+                  transition={{ repeat: Infinity, duration: 4, ease: 'easeInOut' }}
+                  className="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
                   style={{ width: '52px', height: '52px', background: 'linear-gradient(135deg, #a78bfa 0%, #38bdf8 100%)', color: '#070913', fontSize: '24px' }}>
                   <BsStars />
-                </div>
+                </motion.div>
                 <div>
                   <div className="d-flex align-items-center gap-2 flex-wrap mb-1">
                     <span className="badge bg-warning text-dark fw-bold text-uppercase" style={{ fontSize: '0.7rem' }}>🎉 You Won!</span>
                     <span className="small text-info fw-semibold">Winner Confirmed</span>
                   </div>
-                  <h5 className="fw-bold mb-0 text-white" style={{ fontSize: '1rem' }}>
+                  <h5 className="fw-bold mb-0 text-white" style={{ fontSize: 'clamp(0.95rem, 2.5vw, 1.15rem)' }}>
                     {prizeName}
                   </h5>
-                  <div className="d-flex align-items-center gap-3 mt-1 flex-wrap">
-                    <span className="d-flex align-items-center gap-1 text-muted" style={{ fontSize: '0.77rem' }}>
+                  <div className="d-flex align-items-center gap-2 gap-sm-3 mt-1 flex-wrap">
+                    <span className="d-flex align-items-center gap-1 text-muted" style={{ fontSize: '0.75rem' }}>
                       <FiClock size={12} className="text-warning" />
                       Claim by: <strong className="text-light ms-1">{claimDeadline}</strong>
                     </span>
@@ -525,27 +498,36 @@ const Giveaway = () => {
                 </div>
               </div>
 
-              <div className="flex-shrink-0">
+              <div className="w-100 w-md-auto flex-shrink-0 mt-2 mt-md-0">
                 {hasClaimed ? (
-                  <span className="badge px-3 py-2 rounded-3 d-inline-flex align-items-center gap-2"
+                  <span className="badge px-3 py-2 rounded-3 d-inline-flex align-items-center justify-content-center gap-2 w-100 w-md-auto"
                     style={{ background: 'rgba(34,197,94,0.12)', border: '1px solid rgba(34,197,94,0.3)', color: '#4ade80', fontSize: '0.8rem' }}>
                     <FiCheckCircle size={15} />
                     <span>Claim Submitted & Processing</span>
                   </span>
                 ) : (
-                  <button
+                  <motion.button
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
                     id="open-claim-modal-btn"
                     onClick={handleOpenClaimModal}
-                    className="btn px-4 py-2 fw-bold text-dark rounded-pill d-flex align-items-center gap-2"
-                    style={{ background: 'linear-gradient(135deg, #a78bfa 0%, #38bdf8 100%)', boxShadow: '0 4px 18px rgba(56,189,248,0.38)', border: 'none', fontSize: '0.9rem' }}>
+                    className="btn px-4 py-2 fw-bold text-dark rounded-pill d-flex align-items-center justify-content-center gap-2 w-100 w-md-auto"
+                    style={{
+                      background: 'linear-gradient(135deg, #a78bfa 0%, #38bdf8 100%)',
+                      boxShadow: '0 4px 18px rgba(56,189,248,0.38)',
+                      border: 'none',
+                      minHeight: '44px',
+                      fontSize: '0.9rem',
+                    }}>
                     <FiGift size={16} />
                     <span>Claim Your Prize</span>
-                  </button>
+                  </motion.button>
                 )}
               </div>
             </div>
-          </div>
+          </motion.div>
         )}
+
 
         {/* Stats Row */}
         <GiveawayStats
@@ -592,7 +574,7 @@ const Giveaway = () => {
 
         {/* Featured + How To */}
         {activeTab === 'featured' && (
-          <div className="row g-4">
+          <div className="row g-4 align-items-start">
             <div className="col-lg-8">
               <FeaturedGiveaways
                 giveaways={activeGiveaways}
@@ -600,11 +582,12 @@ const Giveaway = () => {
                 onJoinClick={handleJoinClick}
               />
             </div>
-            <div className="col-lg-4">
+            <div className="col-lg-4 position-sticky" style={{ top: '86px', zIndex: 10 }}>
               <HowToParticipate onOpenRules={() => setShowRulesModal(true)} />
             </div>
           </div>
         )}
+
 
         {/* FAQ */}
         <FAQ />

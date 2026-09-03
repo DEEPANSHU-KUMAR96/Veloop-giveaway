@@ -1114,3 +1114,79 @@ body {
 .footer-link:hover {
   color: #38bdf8;
 }
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   Responsive & Mobile Enhancements
+   ───────────────────────────────────────────────────────────────────────────── */
+
+/* Fluid buttons on mobile screens */
+@media (max-width: 576px) {
+  .btn-giveaway-action {
+    font-size: 0.82rem;
+    padding: 10px 14px;
+    height: 42px;
+  }
+
+  .btn-nav-signup {
+    padding: 6px 14px;
+    font-size: 0.82rem;
+  }
+
+  .btn-nav-login {
+    padding: 6px 10px;
+    font-size: 0.84rem;
+  }
+
+  .section-header-box {
+    padding: 12px 14px;
+  }
+
+  .section-header-title {
+    font-size: 0.92rem;
+  }
+
+  .metric-card {
+    padding: 14px;
+    gap: 12px;
+  }
+
+  .metric-icon-wrap {
+    width: 38px;
+    height: 38px;
+    font-size: 17px;
+  }
+
+  .metric-value {
+    font-size: 0.95rem;
+  }
+
+  .exclusive-badge {
+    font-size: 0.68rem;
+    padding: 5px 12px;
+    letter-spacing: 1.2px;
+  }
+
+  .giveaway-card {
+    padding: 14px;
+    border-radius: 16px;
+  }
+
+  .giveaway-img-wrap {
+    height: 145px;
+  }
+}
+
+/* Touch target optimizations */
+@media (pointer: coarse) {
+  .nav-link-custom,
+  .btn,
+  .footer-link {
+    min-height: 36px;
+  }
+}
+
+/* Prevent horizontal overflow anywhere on page */
+.giveaway-page-wrapper {
+  max-width: 100vw;
+  overflow-x: hidden;
+}

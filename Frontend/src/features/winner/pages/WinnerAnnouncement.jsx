@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { FiLogOut, FiUser, FiArrowLeft, FiAlertCircle } from 'react-icons/fi';
-import { BsBoxSeam } from 'react-icons/bs';
+import { FiArrowLeft, FiAlertCircle } from 'react-icons/fi';
+import { motion } from 'framer-motion';
 import useWinner from '../hooks/useWinner.js';
 import useGiveaway from '../../Giveaway/hooks/useGiveaway.js';
 import useAuth from '../../auth/hooks/useAuth.js';
+import Navbar from '../../../components/Navbar.jsx';
 import {
   WinnerHero,
   WinnerBanner,
@@ -16,6 +17,7 @@ import { TrustSection } from '../../Giveaway/components/index.js';
 import ClaimModal from '../../claim/pages/ClaimModal.jsx';
 
 const isValidMongoId = (id) => typeof id === 'string' && /^[0-9a-fA-F]{24}$/.test(id);
+
 
 const WinnerAnnouncement = () => {
   const { giveawayId: paramGiveawayId } = useParams();
@@ -113,65 +115,9 @@ const WinnerAnnouncement = () => {
 
   return (
     <div className="giveaway-page-wrapper">
-      {/* Top Navbar */}
-      <nav className="veloop-navbar">
-        <div className="container d-flex align-items-center justify-content-between">
-          <Link to="/" className="d-flex align-items-center gap-2 text-decoration-none">
-            <span className="veloop-logo-icon" style={{ fontSize: '24px' }}>
-              <BsBoxSeam />
-            </span>
-            <span className="veloop-brand-name" style={{ fontSize: '1.25rem' }}>
-              VELOOP REWARDS
-            </span>
-          </Link>
+      {/* Universal Responsive Navbar with Mobile Aside Drawer */}
+      <Navbar />
 
-          <div className="d-none d-md-flex align-items-center gap-1">
-            <Link to="/giveaway" className="nav-link-custom">
-              Giveaways
-            </Link>
-            <Link to="/winners" className="nav-link-custom active">
-              Winners
-            </Link>
-            <a href="#leaderboard" className="nav-link-custom">
-              Leaderboard
-            </a>
-            <a href="#rewards" className="nav-link-custom">
-              Rewards
-            </a>
-            <a href="#help" className="nav-link-custom">
-              Help Center
-            </a>
-          </div>
-
-          <div className="d-flex align-items-center gap-3">
-            {isAuthenticated ? (
-              <div className="d-flex align-items-center gap-2">
-                <span className="text-white small fw-semibold d-none d-sm-inline">
-                  <FiUser className="me-1 text-primary" />
-                  {user?.fullName || user?.name || user?.username || 'Member'}
-                </span>
-                <button
-                  onClick={logoutUser}
-                  className="btn btn-sm btn-outline-secondary d-flex align-items-center gap-1 text-white border-secondary-subtle"
-                  style={{ borderRadius: '20px', padding: '5px 14px' }}
-                >
-                  <FiLogOut size={14} />
-                  <span>Logout</span>
-                </button>
-              </div>
-            ) : (
-              <>
-                <Link to="/login" className="btn-nav-login">
-                  Login
-                </Link>
-                <Link to="/register" className="btn-nav-signup">
-                  Sign Up
-                </Link>
-              </>
-            )}
-          </div>
-        </div>
-      </nav>
 
       {/* Main Content Area */}
       <div className="container py-4">

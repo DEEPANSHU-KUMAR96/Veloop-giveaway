@@ -1,6 +1,7 @@
 import React from 'react';
 import { FiAward, FiCalendar, FiUsers, FiGift } from 'react-icons/fi';
 import { BsBoxSeam } from 'react-icons/bs';
+import { motion } from 'framer-motion';
 
 // Prize image lookup — matches your seeded prize names
 const prizeImages = {
@@ -38,7 +39,6 @@ const PreviousWinnerCard = ({ giveaway, winners = [] }) => {
   const imgSrc = firstPrize?.image || prizeImages[firstPrizeName] || DEFAULT_IMG;
 
   // ── Winners — from GiveawayWinner collection (passed as prop) ────────────
-  // winners[] is already filtered by giveawayId from the parent
   const hasWinners = winners.length > 0;
   const topWinner = hasWinners ? winners[0] : null;
 
@@ -47,7 +47,8 @@ const PreviousWinnerCard = ({ giveaway, winners = [] }) => {
   const extraWinnersCount = winners.length > 1 ? winners.length - 1 : 0;
 
   return (
-    <div
+    <motion.div
+      whileHover={{ y: -5, transition: { duration: 0.2 } }}
       className="p-3 rounded-4 h-100 d-flex flex-column"
       style={{
         background: 'rgba(15, 20, 39, 0.75)',
@@ -131,7 +132,7 @@ const PreviousWinnerCard = ({ giveaway, winners = [] }) => {
           </div>
         )}
       </div>
-    </div>
+    </motion.div>
   );
 };
 

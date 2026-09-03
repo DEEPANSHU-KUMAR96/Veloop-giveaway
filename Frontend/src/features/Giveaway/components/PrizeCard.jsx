@@ -1,5 +1,6 @@
 import React from 'react';
 import { FiUsers, FiClock, FiArrowRight } from 'react-icons/fi';
+import { motion } from 'framer-motion';
 
 const PrizeCard = ({ giveaway = {}, onJoinClick }) => {
   const id = giveaway.id || giveaway._id || 'giveaway-item';
@@ -48,7 +49,10 @@ const PrizeCard = ({ giveaway = {}, onJoinClick }) => {
   const imageSource = getPrizeImage();
 
   return (
-    <div className="giveaway-card">
+    <motion.div
+      whileHover={{ y: -6, transition: { duration: 0.25 } }}
+      className="giveaway-card"
+    >
       {/* Prize Ribbon Badge */}
       <span className={`prize-badge ${badgeClass}`}>{badge}</span>
 
@@ -65,11 +69,11 @@ const PrizeCard = ({ giveaway = {}, onJoinClick }) => {
 
       {/* Info */}
       <div className="giveaway-info">
-        <h3 className="giveaway-title">{title}</h3>
+        <h3 className="giveaway-title text-truncate" title={title}>{title}</h3>
         <p className="giveaway-subtitle">{subtitle}</p>
 
         {/* Meta Stats */}
-        <div className="giveaway-meta">
+        <div className="giveaway-meta flex-wrap">
           <div className="giveaway-meta-item">
             <FiUsers size={14} />
             <span>{participantsCount}</span>
@@ -81,15 +85,17 @@ const PrizeCard = ({ giveaway = {}, onJoinClick }) => {
         </div>
 
         {/* Action Button */}
-        <button
+        <motion.button
+          whileTap={{ scale: 0.97 }}
           onClick={() => onJoinClick && onJoinClick(giveaway)}
-          className={`btn-giveaway-action ${btnClass}`}
+          className={`btn-giveaway-action ${btnClass} d-flex align-items-center justify-content-center`}
+          style={{ minHeight: '44px' }}
         >
           <span>Join Now</span>
           <FiArrowRight size={16} />
-        </button>
+        </motion.button>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
