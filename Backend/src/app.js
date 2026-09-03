@@ -17,6 +17,7 @@ const app = express();
 
 app.use(express.json()); // parse JSON body
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static("./public")) // for deployment
 
 
 // Security Middleware 
