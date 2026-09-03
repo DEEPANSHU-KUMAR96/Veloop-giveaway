@@ -2,6 +2,8 @@ import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import { generalLimiter } from './middleware/rateLimit.middleware.js';
 import errorMiddleware from './middleware/error.middleware.js';
 
@@ -13,12 +15,16 @@ import winnerRoutes from './routes/winner.routes.js';
 import claimRoutes from './routes/claim.routes.js';
 import adminRoutes from './routes/admin.routes.js';
 
+// ESM __dirname equivalent
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 const app = express();
 app.set("trust proxy", 1);
 
 app.use(express.json()); // parse JSON body
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static("./public")) // for deployment
+app.use(express.static(path.resolve(__dirname, '../public'))); // for deployment
 
 
 // Security Middleware 
@@ -49,7 +55,18 @@ app.use('/api/giveaways', participationRoutes);
 app.use('/api/giveaways', winnerRoutes);
 app.use('/api/giveaways', claimRoutes);
 
-// 404 Handler 
+// ─── SPA Fallback ─────────────────────────────────────────────────────
+// For any route that is NOT an API route, serve the React app's index.html
+// This allows React Router to handle client-side routes like /giveaway, /login, /register, /winners etc.
+app.get('*', (req, res, next) => {
+    // Skip API routes — let them fall through to the 404 handler below
+    if (req.path.startsWith('/api')) {
+        return next();
+    }
+    res.sendFile(path.resolve(__dirname, '../public/index.html'));
+});
+
+// 404 Handler (only for unmatched /api/* routes now)
 app.use((req, res) => {
     res.status(404).json({
         success: false,
