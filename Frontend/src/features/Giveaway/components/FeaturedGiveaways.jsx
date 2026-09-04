@@ -9,13 +9,18 @@ const FeaturedGiveaways = ({
   isLoading = false,
 }) => {
   return (
-    <div>
+    <div id="featured-giveaways">
       {/* Section Header */}
       <div className="section-header-box">
         <div>
           <div className="section-header-title">
             <FiStar className="text-warning" />
             <span>Featured Giveaways</span>
+            {giveaways.length > 0 && (
+              <span className="badge rounded-pill bg-primary-subtle text-info ms-2" style={{ fontSize: '0.72rem', border: '1px solid rgba(56, 189, 248, 0.3)' }}>
+                {giveaways.length} Live
+              </span>
+            )}
           </div>
           <p className="section-header-sub">
             Participate in our handpicked giveaways and win exciting rewards.

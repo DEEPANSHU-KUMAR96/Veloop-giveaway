@@ -43,26 +43,44 @@ const PrizeCard = ({ giveaway = {}, onJoinClick }) => {
 
     if (giveaway.image) return giveaway.image;
     if (giveaway.imageUrl) return giveaway.imageUrl;
-    return '/giftbox.png';
+    return '/giveaway_gift_3d.jpg';
   };
 
   const imageSource = getPrizeImage();
+
+  // Tier Icon
+  const getTierIcon = () => {
+    const b = badge.toLowerCase();
+    if (b.includes('1st')) return '👑';
+    if (b.includes('2nd')) return '🥈';
+    if (b.includes('3rd')) return '🥉';
+    return '🎁';
+  };
 
   return (
     <motion.div
       whileHover={{ y: -6, transition: { duration: 0.25 } }}
       className="giveaway-card"
     >
-      {/* Prize Ribbon Badge */}
-      <span className={`prize-badge ${badgeClass}`}>{badge}</span>
+      {/* Top Tag & Prize Ribbon Badge */}
+      <div className="d-flex align-items-center justify-content-between position-absolute w-100 top-0 start-0 p-3" style={{ zIndex: 2 }}>
+        <span className={`prize-badge position-static m-0 ${badgeClass}`}>
+          <span className="me-1">{getTierIcon()}</span>
+          {badge}
+        </span>
+        <span className="badge rounded-pill" style={{ background: 'rgba(15, 23, 42, 0.75)', border: '1px solid rgba(255, 255, 255, 0.12)', color: '#38bdf8', fontSize: '0.68rem' }}>
+          Free Entry
+        </span>
+      </div>
 
-      {/* Image Preview */}
-      <div className="giveaway-img-wrap">
+      {/* Image Preview with 3D Radial Glow */}
+      <div className="giveaway-img-wrap position-relative">
+        <div className="giveaway-card-glow-backdrop" />
         <img
           src={imageSource}
           alt={title}
           onError={(e) => {
-            e.target.src = '/giftbox.png';
+            e.target.src = '/giveaway_gift_3d.jpg';
           }}
         />
       </div>
@@ -70,17 +88,17 @@ const PrizeCard = ({ giveaway = {}, onJoinClick }) => {
       {/* Info */}
       <div className="giveaway-info">
         <h3 className="giveaway-title text-truncate" title={title}>{title}</h3>
-        <p className="giveaway-subtitle">{subtitle}</p>
+        <p className="giveaway-subtitle line-clamp-2">{subtitle}</p>
 
         {/* Meta Stats */}
         <div className="giveaway-meta flex-wrap">
-          <div className="giveaway-meta-item">
-            <FiUsers size={14} />
+          <div className="giveaway-meta-item text-light">
+            <FiUsers size={14} className="text-info" />
             <span>{participantsCount}</span>
           </div>
           <div className="giveaway-meta-item">
-            <FiClock size={14} />
-            <span>{timeLeftDisplay}</span>
+            <FiClock size={14} className="text-warning" />
+            <span className="text-white-50">{timeLeftDisplay}</span>
           </div>
         </div>
 
@@ -91,7 +109,7 @@ const PrizeCard = ({ giveaway = {}, onJoinClick }) => {
           className={`btn-giveaway-action ${btnClass} d-flex align-items-center justify-content-center`}
           style={{ minHeight: '44px' }}
         >
-          <span>Join Now</span>
+          <span>Participate Now</span>
           <FiArrowRight size={16} />
         </motion.button>
       </div>

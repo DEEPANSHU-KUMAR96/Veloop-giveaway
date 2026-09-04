@@ -108,63 +108,87 @@ const HowToParticipate = ({ onOpenRules }) => {
         </span>
       </div>
 
-      {/* Steps List */}
-      <div className="d-flex flex-column gap-2 mb-3">
-        {steps.map((step, idx) => {
-          const Icon = step.icon;
-          return (
-            <motion.div
-              key={step.num}
-              whileHover={{ x: 3, backgroundColor: 'rgba(255, 255, 255, 0.04)' }}
-              className="p-2 px-2.5 rounded-3 d-flex align-items-center gap-2.5 transition"
-              style={{
-                background: 'rgba(12, 17, 36, 0.55)',
-                border: '1px solid rgba(255, 255, 255, 0.05)',
-              }}
-            >
-              {/* Numbered Icon */}
-              <div
-                className="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
-                style={{
-                  width: '32px',
-                  height: '32px',
-                  background: `${step.color}18`,
-                  border: `1px solid ${step.color}45`,
-                  color: step.color,
-                  fontSize: '14px',
-                }}
-              >
-                <Icon size={15} />
-              </div>
+      {/* Steps Connected Timeline */}
+      <div className="position-relative ps-2 mb-3">
+        {/* Continuous gradient connector line */}
+        <div
+          className="position-absolute"
+          style={{
+            top: '20px',
+            bottom: '24px',
+            left: '26px',
+            width: '2px',
+            background: 'linear-gradient(180deg, #818cf8 0%, #38bdf8 33%, #34d399 66%, #fb923c 100%)',
+            opacity: 0.35,
+          }}
+        />
 
-              {/* Text */}
-              <div className="flex-grow-1 overflow-hidden">
-                <div className="d-flex align-items-center justify-content-between gap-1">
-                  <span className="fw-bold text-white small" style={{ fontSize: '0.82rem' }}>
-                    <span style={{ color: step.color }} className="me-1 font-monospace">
-                      {step.num}.
-                    </span>
-                    {step.title}
-                  </span>
-                  <span
-                    className="badge rounded-pill px-1.5 py-0.5"
-                    style={{
-                      background: `${step.color}15`,
-                      color: step.color,
-                      fontSize: '0.64rem',
-                      fontWeight: 600,
-                    }}
-                  >
-                    {step.badge}
-                  </span>
+        <div className="d-flex flex-column gap-3">
+          {steps.map((step, idx) => {
+            const Icon = step.icon;
+            return (
+              <motion.div
+                key={step.num}
+                whileHover={{ x: 4 }}
+                transition={{ duration: 0.2 }}
+                className="d-flex align-items-start gap-3 position-relative"
+                style={{ zIndex: 1 }}
+              >
+                {/* Timeline Node */}
+                <div
+                  className="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
+                  style={{
+                    width: '38px',
+                    height: '38px',
+                    background: 'rgba(11, 15, 34, 0.95)',
+                    border: `2px solid ${step.color}`,
+                    boxShadow: `0 0 14px ${step.color}35`,
+                    color: step.color,
+                    transition: 'all 0.25s ease',
+                  }}
+                >
+                  <Icon size={16} />
                 </div>
-                <p className="text-muted mb-0 text-truncate" style={{ fontSize: '0.72rem', lineHeight: 1.3 }}>
-                  {step.desc}
-                </p>
-              </div>
-            </motion.div>
-          );
-        })}
+
+                {/* Step Content */}
+                <div
+                  className="flex-grow-1 p-2.5 rounded-3"
+                  style={{
+                    background: 'rgba(15, 23, 48, 0.45)',
+                    border: '1px solid rgba(255, 255, 255, 0.05)',
+                  }}
+                >
+                  <div className="d-flex align-items-center justify-content-between mb-1">
+                    <span className="fw-bold text-white" style={{ fontSize: '0.86rem' }}>
+                      <span className="me-1.5 font-monospace" style={{ color: step.color, fontSize: '0.78rem' }}>
+                        {step.num}.
+                      </span>
+                      {step.title}
+                    </span>
+                    <span
+                      className="px-2 py-0.5 rounded-pill"
+                      style={{
+                        background: `${step.color}15`,
+                        color: step.color,
+                        fontSize: '0.64rem',
+                        fontWeight: 700,
+                        letterSpacing: '0.3px',
+                      }}
+                    >
+                      {step.badge}
+                    </span>
+                  </div>
+                  <p
+                    className="text-muted mb-0"
+                    style={{ fontSize: '0.76rem', lineHeight: '1.45', color: '#94a3b8' }}
+                  >
+                    {step.desc}
+                  </p>
+                </div>
+              </motion.div>
+            );
+          })}
+        </div>
       </div>
 
       {/* Trust Mini Footer */}

@@ -449,7 +449,7 @@ const Giveaway = () => {
         )}
 
         {/* Hero */}
-        <GiveawayHero />
+        <GiveawayHero onRulesClick={() => setShowRulesModal(true)} />
 
         {/* ── Winner Notification Banner (only for authenticated winners) ──── */}
         {isAuthenticated && isWinner && winnerData && (
