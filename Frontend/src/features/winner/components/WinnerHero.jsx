@@ -1,27 +1,26 @@
 import React from 'react';
-import { FiAward, FiCheckCircle } from 'react-icons/fi';
+import { FiAward, FiCheckCircle, FiShield, FiGift, FiZap } from 'react-icons/fi';
 import { BsStars, BsTrophyFill } from 'react-icons/bs';
 import { motion } from 'framer-motion';
 
-const WinnerHero = ({ giveawayTitle = 'Summer Rewards Giveaway', winnerCount = 0 }) => {
+const WinnerHero = ({ giveawayTitle = 'Veloop Rewards Mega Giveaway', winnerCount = 0 }) => {
   return (
-    <div className="giveaway-hero text-center py-4 py-md-5 position-relative">
-      {/* Animated Official Badge */}
+    <div className="text-center py-4 py-md-5 position-relative">
+      {/* Official Announcement Badge */}
       <motion.div
         initial={{ opacity: 0, y: -16, scale: 0.9 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ duration: 0.45, ease: 'easeOut' }}
-        className="exclusive-badge mb-3 px-3 py-2"
-        style={{ fontSize: '0.74rem' }}
+        className="template-winner-hero-badge mb-3"
       >
         <motion.span
           animate={{ rotate: [-6, 6, -6] }}
-          transition={{ repeat: Infinity, duration: 3, ease: 'easeInOut' }}
+          transition={{ repeat: Infinity, duration: 2.5, ease: 'easeInOut' }}
           className="d-inline-flex align-items-center text-warning"
         >
           <BsTrophyFill />
         </motion.span>
-        <span>OFFICIAL WINNER ANNOUNCEMENT</span>
+        <span>OFFICIAL WINNERS • HALL OF FAME</span>
         <BsStars className="text-info" />
       </motion.div>
 
@@ -30,11 +29,10 @@ const WinnerHero = ({ giveawayTitle = 'Summer Rewards Giveaway', winnerCount = 0
         initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.1 }}
-        className="giveaway-main-title px-2"
-        style={{ fontSize: 'clamp(1.75rem, 5vw, 3.2rem)', lineHeight: 1.2 }}
+        className="template-winner-hero-title mb-3"
       >
-        Congratulations to All{' '}
-        <span className="giveaway-gradient-text">Winners!</span>
+        Celebrating Our{' '}
+        <span className="template-winner-gradient-text">Lucky Winners!</span>
       </motion.h1>
 
       {/* Subtitle */}
@@ -42,34 +40,59 @@ const WinnerHero = ({ giveawayTitle = 'Summer Rewards Giveaway', winnerCount = 0
         initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.2 }}
-        className="giveaway-main-subtitle px-3"
-        style={{ fontSize: 'clamp(0.85rem, 2.5vw, 0.98rem)', maxWidth: '620px' }}
+        className="template-winner-hero-subtitle mx-auto mb-4"
       >
-        The draw for <strong>{giveawayTitle}</strong> has concluded. All{' '}
-        {winnerCount > 0 ? `${winnerCount} winners` : 'winners'} were selected transparently using cryptographically verified RNG.
+        The official draw for <strong className="text-white">{giveawayTitle}</strong> has successfully concluded!
+        All winners are verified on-chain and cryptographically secured with zero bot tolerance.
       </motion.p>
 
-      {/* Trust Badges */}
+      {/* High Impact Winners Stats Bar */}
       <motion.div
-        initial={{ opacity: 0, y: 10 }}
+        initial={{ opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.3 }}
-        className="d-flex align-items-center justify-content-center gap-2 gap-sm-3 mt-3 flex-wrap px-2"
+        className="template-winner-stats-bar mx-auto mb-4"
+        style={{ maxWidth: '960px' }}
       >
-        <span
-          className="badge bg-success-subtle text-success border border-success-subtle px-3 py-2 rounded-pill d-inline-flex align-items-center gap-1"
-          style={{ fontSize: '0.76rem' }}
-        >
-          <FiCheckCircle />
-          <span>100% Verified Draw</span>
-        </span>
-        <span
-          className="badge bg-primary-subtle text-primary border border-primary-subtle px-3 py-2 rounded-pill d-inline-flex align-items-center gap-1"
-          style={{ fontSize: '0.76rem' }}
-        >
-          <FiAward />
-          <span>Tamper-Proof Audit</span>
-        </span>
+        <div className="row g-3 text-center align-items-center">
+          {/* Stat 1 */}
+          <div className="col-6 col-md-3 border-end-md" style={{ borderColor: 'rgba(255,255,255,0.08)' }}>
+            <div className="d-flex align-items-center justify-content-center gap-2 mb-1">
+              <BsTrophyFill className="text-warning" size={18} />
+              <span className="template-winner-stat-val text-white">
+                {winnerCount > 0 ? winnerCount : '1,280+'}
+              </span>
+            </div>
+            <div className="template-winner-stat-lbl">Winners Awarded</div>
+          </div>
+
+          {/* Stat 2 */}
+          <div className="col-6 col-md-3 border-end-md" style={{ borderColor: 'rgba(255,255,255,0.08)' }}>
+            <div className="d-flex align-items-center justify-content-center gap-2 mb-1">
+              <FiGift style={{ color: '#c084fc' }} size={18} />
+              <span className="template-winner-stat-val text-white">₹15.5L+</span>
+            </div>
+            <div className="template-winner-stat-lbl">Prizes Distributed</div>
+          </div>
+
+          {/* Stat 3 */}
+          <div className="col-6 col-md-3 border-end-md" style={{ borderColor: 'rgba(255,255,255,0.08)' }}>
+            <div className="d-flex align-items-center justify-content-center gap-2 mb-1">
+              <FiZap className="text-info" size={18} />
+              <span className="template-winner-stat-val text-white">100% RNG</span>
+            </div>
+            <div className="template-winner-stat-lbl">NIST Cryptographic</div>
+          </div>
+
+          {/* Stat 4 */}
+          <div className="col-6 col-md-3">
+            <div className="d-flex align-items-center justify-content-center gap-2 mb-1">
+              <FiShield className="text-success" size={18} />
+              <span className="template-winner-stat-val text-white">Verified</span>
+            </div>
+            <div className="template-winner-stat-lbl">Provably Fair Audit</div>
+          </div>
+        </div>
       </motion.div>
     </div>
   );

@@ -3,6 +3,8 @@ export { default as GiveawayStats } from './GiveawayStats.jsx';
 export { default as PrizeCard } from './PrizeCard.jsx';
 export { default as FeaturedGiveaways } from './FeaturedGiveaways.jsx';
 export { default as HowToParticipate } from './HowToParticipate.jsx';
+export { default as WinnerAnnouncementBanner } from './WinnerAnnouncementBanner.jsx';
+export { default as PreviousWinnersSection } from './PreviousWinnersSection.jsx';
 export { default as WinnersSlider } from './WinnersSlider.jsx';
 export { default as WinnersTabs } from './WinnersTabs.jsx';
 export { default as WinnerCard } from './WinnerCard.jsx';

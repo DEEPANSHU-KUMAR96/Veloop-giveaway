@@ -1,228 +1,103 @@
 import React from 'react';
-import {
-  FiUser,
-  FiCheckSquare,
-  FiTrendingUp,
-  FiGift,
-  FiChevronRight,
-  FiShield,
-  FiZap,
-} from 'react-icons/fi';
-import { BsRocketTakeoff, BsStars } from 'react-icons/bs';
+import { FiUser, FiCheckSquare, FiAward, FiGift } from 'react-icons/fi';
+import { BsTicketPerforated } from 'react-icons/bs';
 import { motion } from 'framer-motion';
 
-const HowToParticipate = ({ onOpenRules }) => {
+const HowToParticipate = () => {
   const steps = [
     {
       num: '01',
-      title: 'Sign Up / Log In',
-      desc: 'Create or sign in to your free account.',
+      title: 'Sign Up / Login',
+      desc: 'Create your account or login to continue.',
       icon: FiUser,
-      color: '#818cf8',
-      badge: 'Free',
+      type: 'purple',
     },
     {
       num: '02',
       title: 'Complete Tasks',
-      desc: 'Earn entry tickets through quick tasks.',
+      desc: 'Complete eligible activities and tasks.',
       icon: FiCheckSquare,
-      color: '#38bdf8',
-      badge: '+Entries',
+      type: 'purple',
     },
     {
       num: '03',
-      title: 'Collect Entries',
-      desc: 'Entries auto-enroll into the draw pool.',
-      icon: FiTrendingUp,
-      color: '#34d399',
-      badge: 'Auto',
+      title: 'Earn Entries',
+      desc: 'Earn more entries for more chances.',
+      icon: BsTicketPerforated,
+      type: 'purple',
     },
     {
       num: '04',
-      title: 'Win & Claim',
-      desc: 'Fair RNG draw & instant prize delivery.',
+      title: 'Join Giveaway',
+      desc: 'Use your entries to participate.',
       icon: FiGift,
-      color: '#fb923c',
-      badge: 'Fair RNG',
+      type: 'purple',
+    },
+    {
+      num: '05',
+      title: 'Winner Selected',
+      desc: 'Winners are selected fairly after it ends.',
+      icon: FiAward,
+      type: 'gold',
     },
   ];
 
   return (
-    <div
-      className="p-3 p-xl-4 rounded-4 position-relative overflow-hidden text-white"
-      style={{
-        background: 'linear-gradient(180deg, rgba(16, 22, 46, 0.92) 0%, rgba(10, 14, 30, 0.96) 100%)',
-        border: '1px solid rgba(255, 255, 255, 0.09)',
-        boxShadow: '0 12px 35px rgba(0, 0, 0, 0.35)',
-        backdropFilter: 'blur(14px)',
-      }}
-    >
-      {/* Ambient background glow */}
-      <div
-        className="position-absolute top-0 end-0 rounded-circle"
-        style={{
-          width: '140px',
-          height: '140px',
-          background: 'radial-gradient(circle, rgba(129, 140, 248, 0.1) 0%, transparent 70%)',
-          transform: 'translate(30%, -30%)',
-          pointerEvents: 'none',
-        }}
-      />
-
-      {/* Header */}
-      <div className="d-flex align-items-center justify-content-between mb-3 pb-2 border-bottom" style={{ borderColor: 'rgba(255, 255, 255, 0.07)' }}>
-        <div className="d-flex align-items-center gap-2">
-          <div
-            className="rounded-3 d-flex align-items-center justify-content-center flex-shrink-0"
-            style={{
-              width: '36px',
-              height: '36px',
-              background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.35) 0%, rgba(56, 189, 248, 0.25) 100%)',
-              border: '1px solid rgba(99, 102, 241, 0.4)',
-              color: '#c4b5fd',
-              fontSize: '16px',
-            }}
-          >
-            <BsRocketTakeoff />
-          </div>
-          <div>
-            <h4 className="fw-bold mb-0 text-white" style={{ fontSize: '0.98rem' }}>
-              How to Participate
-            </h4>
-            <span className="text-muted" style={{ fontSize: '0.72rem' }}>
-              4 quick steps to win
-            </span>
-          </div>
-        </div>
-
-        <span
-          className="badge px-2 py-1 rounded-pill d-inline-flex align-items-center gap-1"
-          style={{
-            background: 'rgba(34, 197, 94, 0.12)',
-            border: '1px solid rgba(34, 197, 94, 0.3)',
-            color: '#4ade80',
-            fontSize: '0.68rem',
-          }}
-        >
-          <FiZap size={10} /> 100% Free
-        </span>
+    <section className="template-how-to-section mb-5 py-3">
+      {/* Centered Heading with Sparkles */}
+      <div className="text-center mb-5">
+        <h3 className="template-how-to-heading d-inline-flex align-items-center justify-content-center gap-2">
+          <span className="sparkle-accent">✨</span>
+          <span>How to Participate?</span>
+          <span className="sparkle-accent">✨</span>
+        </h3>
       </div>
 
-      {/* Steps Connected Timeline */}
-      <div className="position-relative ps-2 mb-3">
-        {/* Continuous gradient connector line */}
-        <div
-          className="position-absolute"
-          style={{
-            top: '20px',
-            bottom: '24px',
-            left: '26px',
-            width: '2px',
-            background: 'linear-gradient(180deg, #818cf8 0%, #38bdf8 33%, #34d399 66%, #fb923c 100%)',
-            opacity: 0.35,
-          }}
-        />
+      {/* Horizontal 5-step Flow with Dashed Connector */}
+      <div className="template-stepper-container position-relative">
+        {/* Continuous Dashed Connector Line behind nodes */}
+        <div className="template-stepper-line d-none d-lg-block" />
 
-        <div className="d-flex flex-column gap-3">
+        <div className="row g-4 justify-content-between position-relative" style={{ zIndex: 2 }}>
           {steps.map((step, idx) => {
             const Icon = step.icon;
-            return (
-              <motion.div
-                key={step.num}
-                whileHover={{ x: 4 }}
-                transition={{ duration: 0.2 }}
-                className="d-flex align-items-start gap-3 position-relative"
-                style={{ zIndex: 1 }}
-              >
-                {/* Timeline Node */}
-                <div
-                  className="rounded-circle d-flex align-items-center justify-content-center flex-shrink-0"
-                  style={{
-                    width: '38px',
-                    height: '38px',
-                    background: 'rgba(11, 15, 34, 0.95)',
-                    border: `2px solid ${step.color}`,
-                    boxShadow: `0 0 14px ${step.color}35`,
-                    color: step.color,
-                    transition: 'all 0.25s ease',
-                  }}
-                >
-                  <Icon size={16} />
-                </div>
+            const isGold = step.type === 'gold';
 
-                {/* Step Content */}
-                <div
-                  className="flex-grow-1 p-2.5 rounded-3"
-                  style={{
-                    background: 'rgba(15, 23, 48, 0.45)',
-                    border: '1px solid rgba(255, 255, 255, 0.05)',
-                  }}
+            return (
+              <div key={step.num} className="col-12 col-sm-6 col-lg template-step-col text-center">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: idx * 0.1 }}
+                  className="d-flex flex-column align-items-center"
                 >
-                  <div className="d-flex align-items-center justify-content-between mb-1">
-                    <span className="fw-bold text-white" style={{ fontSize: '0.86rem' }}>
-                      <span className="me-1.5 font-monospace" style={{ color: step.color, fontSize: '0.78rem' }}>
-                        {step.num}.
-                      </span>
-                      {step.title}
-                    </span>
-                    <span
-                      className="px-2 py-0.5 rounded-pill"
-                      style={{
-                        background: `${step.color}15`,
-                        color: step.color,
-                        fontSize: '0.64rem',
-                        fontWeight: 700,
-                        letterSpacing: '0.3px',
-                      }}
-                    >
-                      {step.badge}
-                    </span>
+                  {/* Step Number Bubble (01, 02, etc.) */}
+                  <div className="template-step-num-bubble mb-2">
+                    {step.num}
                   </div>
-                  <p
-                    className="text-muted mb-0"
-                    style={{ fontSize: '0.76rem', lineHeight: '1.45', color: '#94a3b8' }}
-                  >
+
+                  {/* Icon Circle */}
+                  <div className={`template-step-icon-circle mb-3 ${isGold ? 'icon-circle-gold' : 'icon-circle-purple'}`}>
+                    <Icon size={22} />
+                  </div>
+
+                  {/* Step Title */}
+                  <h5 className="template-step-title mb-1.5">
+                    {step.title}
+                  </h5>
+
+                  {/* Step Description */}
+                  <p className="template-step-desc mb-0">
                     {step.desc}
                   </p>
-                </div>
-              </motion.div>
+                </motion.div>
+              </div>
             );
           })}
         </div>
       </div>
-
-      {/* Trust Mini Footer */}
-      <div
-        className="p-2 px-3 rounded-2 mb-3 d-flex align-items-center justify-content-between text-muted small"
-        style={{ background: 'rgba(255, 255, 255, 0.03)', border: '1px solid rgba(255, 255, 255, 0.05)', fontSize: '0.72rem' }}
-      >
-        <span className="d-flex align-items-center gap-1.5 text-info">
-          <FiShield size={13} />
-          <span>Provably Fair RNG</span>
-        </span>
-        <span className="text-success fw-semibold">Zero Purchase</span>
-      </div>
-
-      {/* Action Button */}
-      <motion.button
-        whileHover={{ scale: 1.02 }}
-        whileTap={{ scale: 0.98 }}
-        type="button"
-        onClick={onOpenRules}
-        className="btn w-100 fw-bold d-flex align-items-center justify-content-center gap-2 rounded-3 text-white"
-        style={{
-          background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.22) 0%, rgba(56, 189, 248, 0.18) 100%)',
-          border: '1px solid rgba(99, 102, 241, 0.4)',
-          height: '40px',
-          fontSize: '0.78rem',
-          letterSpacing: '0.5px',
-        }}
-      >
-        <BsStars size={14} className="text-warning" />
-        <span>VIEW RULES & ELIGIBILITY</span>
-        <FiChevronRight size={14} />
-      </motion.button>
-    </div>
+    </section>
   );
 };
 
