@@ -56,16 +56,16 @@ const GiveawayStats = ({
         transition={{ duration: 0.5, delay: 0.2 }}
         className="template-stats-card p-3 p-md-4 rounded-4"
       >
-        <div className="row g-3 g-md-0 align-items-center">
+        <div className="row g-2 g-md-0 align-items-center">
           {/* Col 1: Total Giveaways */}
           <div className="col-6 col-md-3 template-stat-item border-end-divider">
-            <div className="d-flex align-items-center gap-3">
+            <div className="d-flex align-items-center gap-2 gap-sm-3">
               <div className="template-stat-icon-wrap stat-icon-purple">
-                <FiGift size={20} />
+                <FiGift size={18} />
               </div>
-              <div>
-                <div className="stat-label">Total Giveaways</div>
-                <div className="d-flex align-items-baseline gap-1.5">
+              <div className="min-w-0 flex-grow-1">
+                <div className="stat-label text-truncate">Total Giveaways</div>
+                <div className="d-flex align-items-baseline gap-1 gap-sm-2 flex-wrap">
                   <span className="stat-main-value">{displayGiveaways}</span>
                   <span className="stat-sub-text">Active</span>
                 </div>
@@ -75,13 +75,13 @@ const GiveawayStats = ({
 
           {/* Col 2: Total Participants */}
           <div className="col-6 col-md-3 template-stat-item border-end-divider">
-            <div className="d-flex align-items-center gap-3">
+            <div className="d-flex align-items-center gap-2 gap-sm-3">
               <div className="template-stat-icon-wrap stat-icon-purple">
-                <FiUsers size={20} />
+                <FiUsers size={18} />
               </div>
-              <div>
-                <div className="stat-label">Total Participants</div>
-                <div className="d-flex align-items-baseline gap-1.5">
+              <div className="min-w-0 flex-grow-1">
+                <div className="stat-label text-truncate">Total Participants</div>
+                <div className="d-flex align-items-baseline gap-1 gap-sm-2 flex-wrap">
                   <span className="stat-main-value">{displayParticipants}</span>
                   <span className="stat-sub-text">Users</span>
                 </div>
@@ -91,13 +91,13 @@ const GiveawayStats = ({
 
           {/* Col 3: Prizes Won */}
           <div className="col-6 col-md-3 template-stat-item border-end-divider">
-            <div className="d-flex align-items-center gap-3">
+            <div className="d-flex align-items-center gap-2 gap-sm-3">
               <div className="template-stat-icon-wrap stat-icon-gold">
-                <FiAward size={20} />
+                <FiAward size={18} />
               </div>
-              <div>
-                <div className="stat-label">Prizes Won</div>
-                <div className="d-flex align-items-baseline gap-1.5">
+              <div className="min-w-0 flex-grow-1">
+                <div className="stat-label text-truncate">Prizes Won</div>
+                <div className="d-flex align-items-baseline gap-1 gap-sm-2 flex-wrap">
                   <span className="stat-main-value">{displayPrizesWon}</span>
                   <span className="stat-sub-text">Rewards</span>
                 </div>
@@ -111,7 +111,7 @@ const GiveawayStats = ({
               <div className="stat-label mb-1.5 text-uppercase fw-semibold" style={{ letterSpacing: '0.5px' }}>
                 Giveaway Ends In
               </div>
-              <div className="template-countdown-ticker d-inline-flex align-items-center gap-1.5">
+              <div className="template-countdown-ticker d-inline-flex align-items-center gap-2">
                 {/* Days */}
                 <div className="countdown-block text-center">
                   <span className="time-val font-monospace">{String(timeLeft.days).padStart(2, '0')}d</span>

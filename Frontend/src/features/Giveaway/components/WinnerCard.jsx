@@ -1,5 +1,7 @@
 import React from 'react';
 import { FiAward, FiCheckCircle } from 'react-icons/fi';
+import UserAvatar from '../../../components/UserAvatar.jsx';
+import { getDeterministicAvatar } from '../../../components/UserAvatar.jsx';
 
 const badgeConfig = {
   'iPhone 15 Pro': { badge: '1st Prize', badgeColor: '#f59e0b' },
@@ -8,15 +10,6 @@ const badgeConfig = {
   'Amazon Gift Card ₹2000': { badge: 'Lucky Draw', badgeColor: '#f5a623' },
   'Amazon Gift Card ₹500': { badge: 'Lucky Draw', badgeColor: '#f5a623' },
   'Amazon Voucher ₹20': { badge: 'Lucky Draw', badgeColor: '#f5a623' },
-};
-
-const prizeEmojis = {
-  'iPhone 15 Pro': '📱',
-  'Apple Watch Series 9': '⌚',
-  'AirPods Pro': '🎧',
-  'Amazon Gift Card ₹2000': '🎁',
-  'Amazon Gift Card ₹500': '🎁',
-  'Amazon Voucher ₹20': '🎁',
 };
 
 const WinnerCard = ({ winner }) => {
@@ -34,7 +27,8 @@ const WinnerCard = ({ winner }) => {
     badgeColor: '#f5a623',
   };
 
-  const emoji = prizeEmojis[prizeName] || '🏆';
+  // Use winner's avatar or deterministically pick a local one from name
+  const avatarSrc = winner?.avatar || getDeterministicAvatar(displayName);
 
   return (
     <div
@@ -49,19 +43,15 @@ const WinnerCard = ({ winner }) => {
       {/* Left — Winner Info */}
       <div className="d-flex align-items-center gap-3">
 
-        {/* Avatar — Emoji based kyunki real photos nahi hain */}
-        <div
-          className="rounded-circle d-flex align-items-center justify-content-center position-relative"
-          style={{
-            width: '44px',
-            height: '44px',
-            backgroundColor: `${badgeColor}22`,
-            border: `2px solid ${badgeColor}55`,
-            fontSize: '1.2rem',
-            flexShrink: 0,
-          }}
-        >
-          {emoji}
+        {/* Avatar with glow ring in badge colour */}
+        <div className="position-relative flex-shrink-0">
+          <UserAvatar
+            src={avatarSrc}
+            name={displayName}
+            size={44}
+            showRing={true}
+            ringColor={badgeColor}
+          />
           {/* Online indicator */}
           <span
             className="position-absolute bottom-0 end-0 bg-success rounded-circle border border-dark"
@@ -69,7 +59,7 @@ const WinnerCard = ({ winner }) => {
           />
         </div>
 
-        {/* Name + ID */}
+        {/* Name + Date */}
         <div>
           <div className="d-flex align-items-center gap-1">
             <span className="text-white fw-bold small">{displayName}</span>

@@ -1,19 +1,21 @@
 import React from 'react';
-import { FiAward, FiCalendar, FiUsers, FiGift } from 'react-icons/fi';
+import { FiCalendar, FiUsers, FiGift } from 'react-icons/fi';
 import { BsBoxSeam } from 'react-icons/bs';
 import { motion } from 'framer-motion';
+import UserAvatar from '../../../components/UserAvatar.jsx';
+import { getDeterministicAvatar } from '../../../components/UserAvatar.jsx';
 
-// Prize image lookup — matches your seeded prize names
+// Prize image lookup — uses local bundled images to avoid broken image URLs after deployment
 const prizeImages = {
-  'iPhone 15 Pro': 'https://images.unsplash.com/photo-1695048133142-1a20484d2569?w=500&auto=format&fit=crop&q=80',
-  'Apple Watch Series 9': 'https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=500&auto=format&fit=crop&q=80',
-  'AirPods Pro': 'https://images.unsplash.com/photo-1600294037681-c80b4cb5b434?w=500&auto=format&fit=crop&q=80',
-  'Amazon Gift Card ₹2000': 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=500&auto=format&fit=crop&q=80',
-  'Amazon Gift Card ₹500': 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=500&auto=format&fit=crop&q=80',
-  'Amazon Voucher ₹20': 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=500&auto=format&fit=crop&q=80',
+  'iPhone 15 Pro': '/iphone.png',
+  'Apple Watch Series 9': '/watch.png',
+  'AirPods Pro': '/Earburds.png',
+  'Amazon Gift Card ₹2000': '/twothousand.png',
+  'Amazon Gift Card ₹500': '/fivehundred.png',
+  'Amazon Voucher ₹20': '/tweenty.png',
 };
 
-const DEFAULT_IMG = 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=500&auto=format&fit=crop&q=80';
+const DEFAULT_IMG = '/iphone.png';
 
 const PreviousWinnerCard = ({ giveaway, winners = [] }) => {
   // ── Giveaway fields from backend schema ──────────────────────────────────
@@ -36,7 +38,10 @@ const PreviousWinnerCard = ({ giveaway, winners = [] }) => {
   // First prize info for the card image
   const firstPrize = Array.isArray(giveaway?.prizes) ? giveaway.prizes[0] : null;
   const firstPrizeName = firstPrize?.name || '';
-  const imgSrc = firstPrize?.image || prizeImages[firstPrizeName] || DEFAULT_IMG;
+  // Use local image — fallback chain: prize.image → local map → default
+  const imgSrc = firstPrize?.image && !firstPrize.image.includes('unsplash')
+    ? firstPrize.image
+    : (prizeImages[firstPrizeName] || DEFAULT_IMG);
 
   // ── Winners — from GiveawayWinner collection (passed as prop) ────────────
   const hasWinners = winners.length > 0;
@@ -45,6 +50,9 @@ const PreviousWinnerCard = ({ giveaway, winners = [] }) => {
   const winnerDisplay = topWinner?.displayName || null;
   const winnerPrize = topWinner?.prizeName || firstPrizeName || 'Prize';
   const extraWinnersCount = winners.length > 1 ? winners.length - 1 : 0;
+
+  // Avatar: use winner's avatar field or derive from name
+  const winnerAvatar = topWinner?.avatar || (winnerDisplay ? getDeterministicAvatar(winnerDisplay) : null);
 
   return (
     <motion.div
@@ -105,7 +113,15 @@ const PreviousWinnerCard = ({ giveaway, winners = [] }) => {
         {hasWinners ? (
           <div className="d-flex justify-content-between align-items-center">
             <div className="d-flex align-items-center gap-2">
-              <FiAward className="text-warning flex-shrink-0" size={16} />
+              {/* Winner Avatar */}
+              <UserAvatar
+                src={winnerAvatar}
+                name={winnerDisplay}
+                size={30}
+                showRing={true}
+                ringColor="#f59e0b"
+                className="flex-shrink-0"
+              />
               <div>
                 <div className="text-white fw-semibold small">{winnerDisplay}</div>
                 <div className="text-muted" style={{ fontSize: '0.7rem' }}>Won: {winnerPrize}</div>

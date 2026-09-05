@@ -1965,12 +1965,6 @@ body {
   border-right: 1px solid rgba(255, 255, 255, 0.07);
 }
 
-@media (max-width: 767px) {
-  .border-end-divider {
-    border-right: none;
-  }
-}
-
 .template-stat-icon-wrap {
   width: 44px;
   height: 44px;
@@ -1997,6 +1991,7 @@ body {
   font-size: 0.76rem;
   color: #94a3b8;
   font-weight: 500;
+  line-height: 1.2;
 }
 
 .stat-main-value {
@@ -2010,6 +2005,40 @@ body {
   font-size: 0.8rem;
   color: #94a3b8;
   font-weight: 500;
+}
+
+@media (max-width: 767px) {
+  .border-end-divider {
+    border-right: none;
+  }
+}
+
+@media (max-width: 575px) {
+  .template-stats-card {
+    padding: 12px 10px !important;
+  }
+  .template-stat-item {
+    padding: 4px 6px !important;
+  }
+  .template-stat-icon-wrap {
+    width: 32px !important;
+    height: 32px !important;
+    min-width: 32px;
+  }
+  .template-stat-icon-wrap svg {
+    width: 15px;
+    height: 15px;
+  }
+  .stat-main-value {
+    font-size: 1.05rem !important;
+    line-height: 1.15;
+  }
+  .stat-sub-text {
+    font-size: 0.72rem !important;
+  }
+  .stat-label {
+    font-size: 0.67rem !important;
+  }
 }
 
 .template-countdown-ticker {

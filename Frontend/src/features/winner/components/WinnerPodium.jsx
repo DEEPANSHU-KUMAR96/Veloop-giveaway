@@ -2,6 +2,7 @@ import React from 'react';
 import { FiAward, FiCheckCircle, FiExternalLink, FiShield } from 'react-icons/fi';
 import { BsTrophyFill, BsStars } from 'react-icons/bs';
 import { motion } from 'framer-motion';
+import UserAvatar from '../../../components/UserAvatar.jsx';
 
 // Default showcase champions in case database draw is yet to conclude
 const fallbackTopThree = [
@@ -15,7 +16,7 @@ const fallbackTopThree = [
     city: 'Mumbai, MH',
     ticketNumber: 'VEL-88291',
     image: '/iphone.png',
-    avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=120&auto=format&fit=crop&q=80',
+    avatar: '/avatars/avatar1.svg',
     announcedDate: 'Recent Grand Draw',
   },
   {
@@ -28,7 +29,7 @@ const fallbackTopThree = [
     city: 'Bengaluru, KA',
     ticketNumber: 'VEL-74102',
     image: '/watch.png',
-    avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=120&auto=format&fit=crop&q=80',
+    avatar: '/avatars/avatar2.svg',
     announcedDate: 'Recent Grand Draw',
   },
   {
@@ -41,7 +42,7 @@ const fallbackTopThree = [
     city: 'Delhi, DL',
     ticketNumber: 'VEL-61943',
     image: '/Earburds.png',
-    avatar: 'https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=120&auto=format&fit=crop&q=80',
+    avatar: '/avatars/avatar3.svg',
     announcedDate: 'Recent Grand Draw',
   },
 ];
@@ -200,10 +201,12 @@ const WinnerPodium = ({ topWinners = [] }) => {
                   }}
                 >
                   <div className="d-flex align-items-center justify-content-center gap-3 mb-2">
-                    <img
+                    <UserAvatar
                       src={getWinnerAvatar(winner, idx)}
-                      alt={displayName}
-                      className="template-podium-avatar"
+                      name={displayName}
+                      size={50}
+                      showRing={true}
+                      ringColor={idx === 0 ? '#f59e0b' : idx === 1 ? '#94a3b8' : '#d97706'}
                     />
                     <div className="text-start">
                       <div className="fw-bold text-white d-flex align-items-center gap-1" style={{ fontSize: '0.92rem' }}>

@@ -83,22 +83,22 @@ const GiveawayHero = ({ onJoinClick }) => {
             >
               <div className="template-avatar-stack">
                 <img
-                  src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80"
+                  src="/avatars/avatar1.svg"
                   alt="Participant 1"
                   className="stack-avatar"
                 />
                 <img
-                  src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80"
+                  src="/avatars/avatar2.svg"
                   alt="Participant 2"
                   className="stack-avatar"
                 />
                 <img
-                  src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&auto=format&fit=crop&q=80"
+                  src="/avatars/avatar3.svg"
                   alt="Participant 3"
                   className="stack-avatar"
                 />
                 <img
-                  src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&auto=format&fit=crop&q=80"
+                  src="/avatars/avatar4.svg"
                   alt="Participant 4"
                   className="stack-avatar"
                 />

@@ -2,44 +2,45 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FiChevronLeft, FiChevronRight, FiArrowRight } from 'react-icons/fi';
 import { motion, AnimatePresence } from 'framer-motion';
+import UserAvatar from '../../../components/UserAvatar.jsx';
 
-// Mock/Default recent winners exactly matching the design template
+// Default recent winners using bundled reliable local SVGs
 const DEFAULT_ANNOUNCEMENT_WINNERS = [
   {
     id: 'w-1',
     name: 'Rahul Sharma',
     prize: 'Won iPhone 14',
-    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80',
+    avatar: '/avatars/avatar1.svg',
   },
   {
     id: 'w-2',
     name: 'Sneha Verma',
     prize: 'Won Watch',
-    avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80',
+    avatar: '/avatars/avatar2.svg',
   },
   {
     id: 'w-3',
     name: 'Amit Verma',
     prize: 'Won AirPods',
-    avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80',
+    avatar: '/avatars/avatar3.svg',
   },
   {
     id: 'w-4',
     name: 'Pooja Singh',
     prize: 'Won Amazon Card',
-    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
+    avatar: '/avatars/avatar4.svg',
   },
   {
     id: 'w-5',
     name: 'Vikram Joshi',
     prize: 'Won iPhone 14',
-    avatar: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=150&auto=format&fit=crop&q=80',
+    avatar: '/avatars/avatar5.svg',
   },
   {
     id: 'w-6',
     name: 'Kavita Roy',
     prize: 'Won ₹2000 Card',
-    avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&auto=format&fit=crop&q=80',
+    avatar: '/avatars/avatar6.svg',
   },
 ];
 
@@ -146,15 +147,13 @@ const WinnerAnnouncementBanner = ({ winners = [] }) => {
                     style={{ width: itemWidth, maxWidth: '120px' }}
                   >
                     {/* Circular Avatar with Glowing Ring */}
-                    <div className="template-winner-avatar-ring mx-auto mb-1.5">
-                      <img
+                    <div className="mx-auto mb-1.5 d-flex justify-content-center">
+                      <UserAvatar
                         src={winner.avatar}
-                        alt={winner.name}
-                        className="template-winner-avatar-img"
-                        onError={(e) => {
-                          e.target.src =
-                            'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80';
-                        }}
+                        name={winner.name}
+                        size={itemsPerPage === 3 ? 48 : 54}
+                        showRing={true}
+                        ringColor="#a855f7"
                       />
                     </div>
                     {/* Winner Name */}

@@ -2,8 +2,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { FiChevronRight } from 'react-icons/fi';
 import { motion } from 'framer-motion';
+import UserAvatar from '../../../components/UserAvatar.jsx';
 
-// Exactly matching the 5 previous winners in the design template
+// Exactly matching the 5 previous winners in the design template using reliable local SVGs
 const DEFAULT_PREVIOUS_WINNERS = [
   {
     id: 'prev-1',
@@ -11,7 +12,7 @@ const DEFAULT_PREVIOUS_WINNERS = [
     imgSrc: '/iphone.png',
     winnerName: 'Karan Mehta',
     wonDate: 'Won on 10 May 2024',
-    avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&auto=format&fit=crop&q=80',
+    avatar: '/avatars/avatar1.svg',
   },
   {
     id: 'prev-2',
@@ -19,7 +20,7 @@ const DEFAULT_PREVIOUS_WINNERS = [
     imgSrc: '/watch.png',
     winnerName: 'Neha Kapoor',
     wonDate: 'Won on 08 May 2024',
-    avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&auto=format&fit=crop&q=80',
+    avatar: '/avatars/avatar2.svg',
   },
   {
     id: 'prev-3',
@@ -27,7 +28,7 @@ const DEFAULT_PREVIOUS_WINNERS = [
     imgSrc: '/Earburds.png',
     winnerName: 'Rohit Gupta',
     wonDate: 'Won on 05 May 2024',
-    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80',
+    avatar: '/avatars/avatar3.svg',
   },
   {
     id: 'prev-4',
@@ -35,7 +36,7 @@ const DEFAULT_PREVIOUS_WINNERS = [
     imgSrc: '/twothousand.png',
     winnerName: 'Anjali Singh',
     wonDate: 'Won on 03 May 2024',
-    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80',
+    avatar: '/avatars/avatar4.svg',
   },
   {
     id: 'prev-5',
@@ -43,7 +44,7 @@ const DEFAULT_PREVIOUS_WINNERS = [
     imgSrc: '/iphone.png',
     winnerName: 'Sahil Verma',
     wonDate: 'Won on 28 Apr 2024',
-    avatar: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=100&auto=format&fit=crop&q=80',
+    avatar: '/avatars/avatar5.svg',
   },
 ];
 
@@ -109,13 +110,11 @@ const PreviousWinnersSection = ({ pastWinners = [] }) => {
 
               {/* Winner Avatar + Details Row */}
               <div className="d-flex align-items-center gap-2 mt-auto pt-2 border-top border-secondary-subtle">
-                <img
+                <UserAvatar
                   src={item.avatar}
-                  alt={item.winnerName}
-                  className="template-prev-avatar flex-shrink-0"
-                  onError={(e) => {
-                    e.target.src = 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80';
-                  }}
+                  name={item.winnerName}
+                  size={28}
+                  className="flex-shrink-0"
                 />
                 <div className="overflow-hidden">
                   <div className="template-prev-winner-name text-truncate">

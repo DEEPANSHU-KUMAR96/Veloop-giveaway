@@ -14,8 +14,9 @@ import {
 } from 'react-icons/fi';
 import { BsStars, BsTrophyFill } from 'react-icons/bs';
 import { motion, AnimatePresence } from 'framer-motion';
+import UserAvatar from '../../../components/UserAvatar.jsx';
 
-// Rich verified showcase winners to ensure the community explorer always looks dynamic
+// Rich verified showcase winners using local SVGs
 const fallbackShowcaseWinners = [
   {
     _id: 'win-showcase-1',
@@ -26,7 +27,7 @@ const fallbackShowcaseWinners = [
     category: 'tech',
     prizeValue: '₹1,34,900',
     image: '/iphone.png',
-    avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=120&auto=format&fit=crop&q=80',
+    avatar: '/avatars/avatar1.svg',
     announcedDate: '2024-03-01',
     ticketNumber: 'VEL-88291',
     city: 'Mumbai, MH',
@@ -40,7 +41,7 @@ const fallbackShowcaseWinners = [
     category: 'tech',
     prizeValue: '₹41,900',
     image: '/watch.png',
-    avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=120&auto=format&fit=crop&q=80',
+    avatar: '/avatars/avatar2.svg',
     announcedDate: '2024-03-01',
     ticketNumber: 'VEL-74102',
     city: 'Bengaluru, KA',
@@ -54,7 +55,7 @@ const fallbackShowcaseWinners = [
     category: 'tech',
     prizeValue: '₹24,900',
     image: '/Earburds.png',
-    avatar: 'https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=120&auto=format&fit=crop&q=80',
+    avatar: '/avatars/avatar3.svg',
     announcedDate: '2024-03-01',
     ticketNumber: 'VEL-61943',
     city: 'Delhi, DL',
@@ -68,7 +69,7 @@ const fallbackShowcaseWinners = [
     category: 'vouchers',
     prizeValue: '₹2,000',
     image: '/twothousand.png',
-    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=120&auto=format&fit=crop&q=80',
+    avatar: '/avatars/avatar4.svg',
     announcedDate: '2024-02-28',
     ticketNumber: 'VEL-55120',
     city: 'Pune, MH',
@@ -82,7 +83,7 @@ const fallbackShowcaseWinners = [
     category: 'vouchers',
     prizeValue: '₹500',
     image: '/fivehundred.png',
-    avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=120&auto=format&fit=crop&q=80',
+    avatar: '/avatars/avatar5.svg',
     announcedDate: '2024-02-28',
     ticketNumber: 'VEL-44918',
     city: 'Hyderabad, TS',
@@ -96,7 +97,7 @@ const fallbackShowcaseWinners = [
     category: 'tech',
     prizeValue: '₹1,19,900',
     image: '/iphone.png',
-    avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=120&auto=format&fit=crop&q=80',
+    avatar: '/avatars/avatar6.svg',
     announcedDate: '2024-02-25',
     ticketNumber: 'VEL-39821',
     city: 'Ahmedabad, GJ',
@@ -110,7 +111,7 @@ const fallbackShowcaseWinners = [
     category: 'tech',
     prizeValue: '₹39,900',
     image: '/watch.png',
-    avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=120&auto=format&fit=crop&q=80',
+    avatar: '/avatars/avatar2.svg',
     announcedDate: '2024-02-20',
     ticketNumber: 'VEL-28941',
     city: 'Chandigarh, PB',
@@ -124,7 +125,7 @@ const fallbackShowcaseWinners = [
     category: 'vouchers',
     prizeValue: '₹20',
     image: '/tweenty.png',
-    avatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=120&auto=format&fit=crop&q=80',
+    avatar: '/avatars/avatar3.svg',
     announcedDate: '2024-02-18',
     ticketNumber: 'VEL-11204',
     city: 'Kolkata, WB',
@@ -185,7 +186,7 @@ const WinnerList = ({ winners = [], isLoading = false }) => {
   };
 
   const getWinnerAvatar = (winner, idx) => {
-    if (winner.avatar && winner.avatar.trim() !== '') return winner.avatar;
+    if (winner.avatar && winner.avatar.trim() !== '' && !winner.avatar.includes('unsplash.com')) return winner.avatar;
     return fallbackShowcaseWinners[idx % fallbackShowcaseWinners.length].avatar;
   };
 
@@ -405,11 +406,12 @@ const WinnerList = ({ winners = [], isLoading = false }) => {
                       style={{ background: 'rgba(10, 14, 28, 0.6)', border: '1px solid rgba(255, 255, 255, 0.05)' }}
                     >
                       <div className="d-flex align-items-center gap-2 mb-1">
-                        <img
+                        <UserAvatar
                           src={getWinnerAvatar(winner, idx)}
-                          alt={displayName}
-                          className="rounded-circle"
-                          style={{ width: '28px', height: '28px', objectFit: 'cover', border: '1px solid rgba(139,92,246,0.5)' }}
+                          name={displayName}
+                          size={28}
+                          showRing={true}
+                          ringColor="#a855f7"
                         />
                         <div className="text-truncate">
                           <div className="fw-semibold text-white text-truncate" style={{ fontSize: '0.82rem' }}>
@@ -467,11 +469,12 @@ const WinnerList = ({ winners = [], isLoading = false }) => {
                     <tr key={winner._id || winner.id || idx} style={{ borderBottom: '1px solid rgba(255, 255, 255, 0.04)' }}>
                       <td className="py-3 px-4">
                         <div className="d-flex align-items-center gap-2">
-                          <img
+                          <UserAvatar
                             src={getWinnerAvatar(winner, idx)}
-                            alt={displayName}
-                            className="rounded-circle"
-                            style={{ width: '32px', height: '32px', objectFit: 'cover', border: '1px solid rgba(139,92,246,0.5)' }}
+                            name={displayName}
+                            size={32}
+                            showRing={true}
+                            ringColor="#a855f7"
                           />
                           <div>
                             <div className="fw-semibold text-white" style={{ fontSize: '0.88rem' }}>{displayName}</div>
